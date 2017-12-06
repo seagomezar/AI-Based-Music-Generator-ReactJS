@@ -1,0 +1,13 @@
+svg {
+  background-color: #555555;
+}
+
+circle {
+  fill: white;
+  opacity: 0.3;
+}
+
+circle:active {
+  fill: yellow;
+  opacity: 1;
+}
