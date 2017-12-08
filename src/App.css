@@ -1,13 +1,28 @@
+
+
 svg {
   background-color: #555555;
+  display: inline-block;
+}
+
+.container {
+  width: 100%;
+}
+
+.panel {
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+  vertical-align: top;
+}
+.song-container {
+  width: 100%;
+  word-break: break-all;
+  height: 100px;
+  overflow: scroll;
 }
 
 circle {
   fill: white;
   opacity: 0.3;
-}
-
-circle:active {
-  fill: yellow;
-  opacity: 1;
 }
