@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Tone from 'tone';
+import Vex from 'vexflow';
 
 class App extends Component {
 
@@ -9,11 +10,11 @@ class App extends Component {
 		super();
 		// Some initializations
 		this.height = window.innerHeight - 5;
-		this.width = window.innerWidth - (window.innerWidth * 0.2);
+		this.width = window.innerWidth - (window.innerWidth * 0.4);
 		const NEGRA = 1;
 		const BLANCA = NEGRA * 2;
 		const CORCHEA = NEGRA / 2;
-		this.possibleTempos = [NEGRA, BLANCA, CORCHEA];
+		this.possibleTempos = [NEGRA];
 		this.melodySeed = [
 			'B3', 'C#4', 'D#4', 'E4', 'F#4', 'A4', 'B4',
 			'C#4', 'D#5', 'E5', 'F#5', 'G#4', 'A5', 'B5',
@@ -29,7 +30,8 @@ class App extends Component {
 			figures: this.possibleTempos,
 			generated: false,
 			song: [],
-			isPlaying: false
+			isPlaying: false,
+			creationDate: 0
 		};
 
 		// Set the piano instrument
@@ -81,6 +83,7 @@ class App extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleGenerate = this.handleGenerate.bind(this);
 		this.handleStopSong = this.handleStopSong.bind(this);
+		this.paintSong = this.paintSong.bind(this);
 	}
 
 	addCircles(notesToAdd) {
@@ -136,10 +139,12 @@ class App extends Component {
 	generateMusicAndTempo(duration, posibleNotes, possibleFigures) {
 		const song = [];
 		let currentTempo = 0;
-		while (currentTempo <= duration) {
+		while (currentTempo < duration) {
 			const tempo = this.getRandomFigure(possibleFigures);
+			let figure;
+			if (tempo === 1) {figure = '1q'};
 			currentTempo += tempo;
-			song.push(["0:" + currentTempo, this.getRandomNote(posibleNotes), '1t']);
+			song.push(["0:" + currentTempo, this.getRandomNote(posibleNotes), figure]);
 		}
 		return song;
 	}
@@ -211,6 +216,82 @@ class App extends Component {
 		const song = this.generateMusicAndTempo(this.state.duration, notes, figures);
 		this.setState({ song: song });
 		this.setState({ generated: true });
+		this.paintSong(song);
+		this.setState({creationDate : Date.now()}); 
+
+	}
+
+	paintSong(song) {
+		const VF = Vex.Flow;
+		const notesBar = [];
+		let currentTempo = 0;
+		let bars = this.state.duration/4;
+		let currentBar = [];
+		// Create an SVG renderer and attach it to the DIV element named "boo".
+		var div = document.getElementById("boo")
+		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+
+		// Configure the rendering context. 
+		renderer.resize(500, (bars/2) * 110);
+		var context = renderer.getContext();
+		context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+		// Create a stave of width 400 at position 10, 40 on the canvas.
+		var stave = new VF.Stave(10, 40, 200);
+		
+				// Add a clef and time signature.
+				stave.addClef("treble");
+				stave.setEndBarType(VF.Barline.type.SIMPLE);
+				stave.setContext(context).draw();
+				var currentMeasure = 1;
+		for (let i = 0; i < song.length; i++) {
+			const note = song[i];
+			const timeEnd = note[0];
+			const sound = note[1];
+			const figure = note[2];
+			const duration = Number(note[0].split(':')[1])-currentTempo; // Fix this improving the figure painting
+			currentTempo += duration;
+			let scale;
+			if (figure === '1q') {
+				if (sound[1] != '#') {
+					scale = sound[1];
+				} else {
+					scale = sound[2];
+				}
+				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: 'q' });
+				currentBar.push(item);
+			}
+			if (currentTempo%4 === 0) {
+
+				notesBar.push(currentBar);
+				if (currentTempo === this.state.duration) {
+					stave.setEndBarType(VF.Barline.type.END);
+					VF.Formatter.FormatAndDraw(context, stave, currentBar);
+					stave.setContext(context).draw();
+				} else {
+					stave.setEndBarType(VF.Barline.type.SIMPLE);
+					VF.Formatter.FormatAndDraw(context, stave, currentBar);
+					if (currentMeasure === 2) {
+						let y = stave.y + 100;
+						let x = 0;
+						stave = new VF.Stave(x, y, 200);
+						stave.addClef("treble");
+						currentMeasure = 1;
+					} else {
+						currentMeasure += 1;
+						stave.setEndBarType(VF.Barline.type.SIMPLE);
+						stave = new VF.Stave(stave.width + stave.x, stave.y, 200);
+					}
+					stave.setContext(context).draw();
+					
+					
+				}
+
+				
+				
+				currentBar = [];
+			}
+		}
+
 	}
 
 	handlePlaySong() {
@@ -270,7 +351,11 @@ class App extends Component {
 						<div>
 							<button onClick={this.handleGenerate}>Generate Melody</button>
 						</div>
-						{(this.state.generated) ? <div className="song-container">{this.state.song}</div> : ''}
+						<div className="song-container">
+							<h3>Generated {this.state.creationDate}</h3>
+							<div id="boo"></div>
+						</div>
+						{(this.state.generated) ? '' : ''}
 						{(this.state.generated && !this.state.isPlaying) ? <div>
 							<button onClick={this.handlePlaySong}>Play Melody</button>
 						</div> : ''}
