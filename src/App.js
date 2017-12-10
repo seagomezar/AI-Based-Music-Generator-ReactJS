@@ -123,6 +123,7 @@ class App extends Component {
 			}
 
 		}
+		console.log(notes);
 		return notes;
 	}
 
