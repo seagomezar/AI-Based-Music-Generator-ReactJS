@@ -17,23 +17,12 @@ class App extends Component {
 		// Some initializations
 		this.height = window.innerHeight - 5;
 		this.width = window.innerWidth - (window.innerWidth * 0.4);
-		const NEGRA = 1;
-		const BLANCA = NEGRA * 2;
-		const CORCHEA = NEGRA / 2;
-		this.possibleTempos = [NEGRA];
-		this.melodySeed = [
-			'B3', 'C#4', 'D#4', 'E4', 'F#4', 'A4', 'B4',
-			'C#4', 'D#5', 'E5', 'F#5', 'G#4', 'A5', 'B5',
-			'C#6', 'D#6', 'E6'
-		];
 		this.minimumRadius = 40;
 		// Set the initial state
 		this.state = {
 			circles: [],
 			speed: 100,
-			duration: 100,
-			notes: this.melodySeed,
-			figures: this.possibleTempos,
+			duration: 10,
 			generated: false,
 			song: [],
 			isPlaying: false,
@@ -127,9 +116,7 @@ class App extends Component {
 			} else {
 				i++;
 			}
-
 		}
-		console.log(notes);
 		return notes;
 	}
 
@@ -217,18 +204,8 @@ class App extends Component {
 		}
 	}
 
-	handleGenerate2() {
-		const notes = this.state.notes;
-		const figures = this.state.figures;
-		const song = this.generateMusicAndTempo(this.state.duration, notes, figures);
-		this.setState({ song: song });
-		this.setState({ generated: true });
-		this.paintSong(song);
-		this.setState({ creationDate: Date.now() });
-	}
-
 	handleGenerate() {
-		const song = generateSong(2);
+		const song = generateSong(this.state.duration);
 		this.setState({ song: song });
 		this.setState({ generated: true });
 		this.paintSong(song);
@@ -239,23 +216,16 @@ class App extends Component {
 		switch (duration) {
 			case 4:
 				return 'w';
-				break;
 			case 2:
 				return 'h';
-				break;
 			case 1:
 				return 'q';
-				break;
 			case 0.5:
 				return '8';
-				break;
 			case 0.25:
 				return '16';
-				break;
 			case 0.125:
 				return '32';
-				break;
-
 			default:
 				break;
 		}
@@ -265,23 +235,16 @@ class App extends Component {
 		switch (duration) {
 			case 4:
 				return '1m';
-				break;
 			case 2:
 				return '2n';
-				break;
 			case 1:
 				return '4n';
-				break;
 			case 0.5:
 				return '8t';
-				break;
 			case 0.25:
 				return '16t';
-				break;
 			case 0.125:
 				return '32t';
-				break;
-
 			default:
 				break;
 		}
@@ -298,7 +261,7 @@ class App extends Component {
 		div.setAttribute('id', 'boo');
 		parent.appendChild(div);
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-		renderer.resize(500, (bars / 2) * 150);
+		renderer.resize(500, (bars / 2) * 135);
 		var context = renderer.getContext();
 		var stave = new VF.Stave(10, 40, 240);
 		stave.addClef("treble").addTimeSignature("4/4");
@@ -314,18 +277,19 @@ class App extends Component {
 				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: duration });
 				currentBar.push(item);
 			}
+			let beams;
 			if (i === song.length-1){
 				stave.setEndBarType(VF.Barline.type.END);
 				stave.setContext(context).draw();
-				var beams = VF.Beam.generateBeams(currentBar);
+				beams = VF.Beam.generateBeams(currentBar);
 				VF.Formatter.FormatAndDraw(context, stave, currentBar);
-				beams.forEach(function(b) {b.setContext(context).draw()})
+				beams.forEach(function(b) {b.setContext(context).draw()});
 			}
 			else {
 				stave.setContext(context).draw();
-				var beams = VF.Beam.generateBeams(currentBar);
+				beams = VF.Beam.generateBeams(currentBar);
 				VF.Formatter.FormatAndDraw(context, stave, currentBar);
-				beams.forEach(function(b) {b.setContext(context).draw()})
+				beams.forEach(function(b) {b.setContext(context).draw()});
 				if ( (i+1)%2 === 0) {
 					y = stave.y + 120;
 					x = 10;
@@ -347,7 +311,6 @@ class App extends Component {
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
 				const sound = notesa[note.sound];
-				const scale = sound[1];
 				
 				let duration = this.getNotationForPlay(note.duration);
 				newSong.push([i + ":" + currentTempo, sound, duration]);
@@ -362,7 +325,7 @@ class App extends Component {
 		const song = this.translateForTone(this.state.song);
 		Tone.Transport.cancel();
 		Tone.Transport.clear();
-		const part = new Tone.Part((time, note, duration) => {
+		new Tone.Part((time, note, duration) => {
 			this.piano.triggerAttackRelease(note, duration, time);
 			Tone.Draw.schedule(() => {
 				const element = document.getElementById(note);
@@ -405,11 +368,11 @@ class App extends Component {
 					<div className="params">
 						<div>
 							Speed: 	<input name="speed" type="number" min="1" max="400"
-								onChange={this.handleChange} value={this.state.speed} />
+								onChange={this.handleChange} value={this.state.speed} /> BPM
 						</div>
 						<div>
 							Duration: 	<input name="duration" type="number" min="1" max="400"
-								onChange={this.handleChange} value={this.state.duration} />
+								onChange={this.handleChange} value={this.state.duration} /> Measures
 						</div>
 					</div>
 					<div className="buttons">

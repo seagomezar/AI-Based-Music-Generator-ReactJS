@@ -8,6 +8,12 @@ const allNotes = [
     "C6", "D6", "E6", "F6", "G6", "A6", "B6", 
     "C7" 
   ];
+
+  melodySeed = [
+			'B3', 'C#4', 'D#4', 'E4', 'F#4', 'A4', 'B4',
+			'C#4', 'D#5', 'E5', 'F#5', 'G#4', 'A5', 'B5',
+			'C#6', 'D#6', 'E6'
+		];
   */
 
   const allNotes = [
@@ -16,7 +22,7 @@ const allNotes = [
   ];
   
   const allDurations = [
-   2, 4, 1, 0.5, 0.25, 0.125
+   2, 4, 1, 0.5, 0.25
   ];
   
   /**
