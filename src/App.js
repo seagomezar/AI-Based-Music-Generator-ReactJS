@@ -1,8 +1,14 @@
+import generateSong from './generator';
 import React, { Component } from 'react';
 import './App.css';
 
 import Tone from 'tone';
 import Vex from 'vexflow';
+
+const notesa = [
+	"C4", "D4", "E4", "F4", "G4", "A4", "B4",
+	"C5", "D5", "E5", "F5", "G5", "A5", "B5"
+];
 
 class App extends Component {
 
@@ -143,7 +149,7 @@ class App extends Component {
 		while (currentTempo < duration) {
 			const tempo = this.getRandomFigure(possibleFigures);
 			let figure;
-			if (tempo === 1) {figure = '1q'};
+			if (tempo === 1) { figure = '1q' };
 			currentTempo += tempo;
 			song.push(["0:" + currentTempo, this.getRandomNote(posibleNotes), figure]);
 		}
@@ -211,91 +217,151 @@ class App extends Component {
 		}
 	}
 
-	handleGenerate() {
+	handleGenerate2() {
 		const notes = this.state.notes;
 		const figures = this.state.figures;
 		const song = this.generateMusicAndTempo(this.state.duration, notes, figures);
 		this.setState({ song: song });
 		this.setState({ generated: true });
 		this.paintSong(song);
-		this.setState({creationDate : Date.now()}); 
+		this.setState({ creationDate: Date.now() });
+	}
 
+	handleGenerate() {
+		const song = generateSong(2);
+		this.setState({ song: song });
+		this.setState({ generated: true });
+		this.paintSong(song);
+		this.setState({ creationDate: Date.now() });
+	}
+
+	getNotationForPaint(duration) {
+		switch (duration) {
+			case 4:
+				return 'w';
+				break;
+			case 2:
+				return 'h';
+				break;
+			case 1:
+				return 'q';
+				break;
+			case 0.5:
+				return '8';
+				break;
+			case 0.25:
+				return '16';
+				break;
+			case 0.125:
+				return '32';
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	getNotationForPlay(duration) {
+		switch (duration) {
+			case 4:
+				return '1m';
+				break;
+			case 2:
+				return '2n';
+				break;
+			case 1:
+				return '4n';
+				break;
+			case 0.5:
+				return '8t';
+				break;
+			case 0.25:
+				return '16t';
+				break;
+			case 0.125:
+				return '32t';
+				break;
+
+			default:
+				break;
+		}
 	}
 
 	paintSong(song) {
 		const VF = Vex.Flow;
-		const notesBar = [];
-		let currentTempo = 0;
-		let bars = this.state.duration/4;
+		let bars = song.length;
 		let currentBar = [];
-		// Create an SVG renderer and attach it to the DIV element named "boo".
-		var div = document.getElementById("boo")
+		var div = document.getElementById("boo");
+		let parent = div.parentNode;
+		parent.removeChild(div);
+		div = document.createElement("div");
+		div.setAttribute('id', 'boo');
+		parent.appendChild(div);
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-
-		// Configure the rendering context. 
-		renderer.resize(500, (bars/2) * 110);
+		renderer.resize(500, (bars / 2) * 150);
 		var context = renderer.getContext();
-		context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
-		// Create a stave of width 400 at position 10, 40 on the canvas.
-		var stave = new VF.Stave(10, 40, 200);
-		
-				// Add a clef and time signature.
-				stave.addClef("treble");
-				stave.setEndBarType(VF.Barline.type.SIMPLE);
-				stave.setContext(context).draw();
-				var currentMeasure = 1;
+		var stave = new VF.Stave(10, 40, 240);
+		stave.addClef("treble").addTimeSignature("4/4");
 		for (let i = 0; i < song.length; i++) {
-			const note = song[i];
-			const timeEnd = note[0];
-			const sound = note[1];
-			const figure = note[2];
-			const duration = Number(note[0].split(':')[1])-currentTempo; // Fix this improving the figure painting
-			currentTempo += duration;
-			let scale;
-			if (figure === '1q') {
-				if (sound[1] != '#') {
-					scale = sound[1];
-				} else {
-					scale = sound[2];
-				}
-				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: 'q' });
+			const notes = song[i].notes; // measure notes
+			let x = stave.width + stave.x;
+			let y = stave.y;
+			for (let j = 0; j < notes.length; j++) {
+				const note = notes[j];
+				const sound = notesa[note.sound];
+				const scale = sound[1];
+				let duration = this.getNotationForPaint(note.duration);
+				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: duration });
 				currentBar.push(item);
 			}
-			if (currentTempo%4 === 0) {
-
-				notesBar.push(currentBar);
-				if (currentTempo === this.state.duration) {
-					stave.setEndBarType(VF.Barline.type.END);
-					VF.Formatter.FormatAndDraw(context, stave, currentBar);
-					stave.setContext(context).draw();
-				} else {
-					stave.setEndBarType(VF.Barline.type.SIMPLE);
-					VF.Formatter.FormatAndDraw(context, stave, currentBar);
-					if (currentMeasure === 2) {
-						let y = stave.y + 100;
-						let x = 0;
-						stave = new VF.Stave(x, y, 200);
-						stave.addClef("treble");
-						currentMeasure = 1;
-					} else {
-						currentMeasure += 1;
-						stave.setEndBarType(VF.Barline.type.SIMPLE);
-						stave = new VF.Stave(stave.width + stave.x, stave.y, 200);
-					}
-					stave.setContext(context).draw();
-					
-					
-				}
-
-				
-				
-				currentBar = [];
+			if (i === song.length-1){
+				stave.setEndBarType(VF.Barline.type.END);
+				stave.setContext(context).draw();
+				var beams = VF.Beam.generateBeams(currentBar);
+				VF.Formatter.FormatAndDraw(context, stave, currentBar);
+				beams.forEach(function(b) {b.setContext(context).draw()})
 			}
+			else {
+				stave.setContext(context).draw();
+				var beams = VF.Beam.generateBeams(currentBar);
+				VF.Formatter.FormatAndDraw(context, stave, currentBar);
+				beams.forEach(function(b) {b.setContext(context).draw()})
+				if ( (i+1)%2 === 0) {
+					y = stave.y + 120;
+					x = 10;
+					stave = new VF.Stave(x, y, 220);
+					stave.addClef("treble");
+				} else {
+					stave = new VF.Stave(x, y, 220);
+				}
+			}
+			currentBar = [];	
 		}
+	}
 
+	translateForTone(song){
+		const newSong = [];
+		for (let i = 0; i < song.length; i++) {
+			let currentTempo = 0;
+			const notes = song[i].notes; // measure notes
+			for (let j = 0; j < notes.length; j++) {
+				const note = notes[j];
+				const sound = notesa[note.sound];
+				const scale = sound[1];
+				
+				let duration = this.getNotationForPlay(note.duration);
+				newSong.push([i + ":" + currentTempo, sound, duration]);
+				currentTempo += note.duration;	
+			}
+
+		}
+		return newSong;
 	}
 
 	handlePlaySong() {
+		const song = this.translateForTone(this.state.song);
+		Tone.Transport.cancel();
+		Tone.Transport.clear();
 		const part = new Tone.Part((time, note, duration) => {
 			this.piano.triggerAttackRelease(note, duration, time);
 			Tone.Draw.schedule(() => {
@@ -318,20 +384,18 @@ class App extends Component {
 					console.log("CIRCLE_NOT_FOUND", note);
 				}
 			}, time);
-		}, this.state.song);
-
+		}, song).start();
 		Tone.Transport.bpm.rampTo(this.state.speed);
-		part.start();
 		Tone.Transport.start();
 		this.setState({ isPlaying: true });
 	}
 
 	handleStopSong() {
 		Tone.Transport.stop();
+		Tone.Transport.cancel();
+		Tone.Transport.clear();
 		this.setState({ isPlaying: false });
 	}
-
-
 
 	render() {
 		return (
