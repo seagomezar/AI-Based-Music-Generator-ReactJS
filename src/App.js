@@ -271,10 +271,13 @@ class App extends Component {
 			let y = stave.y;
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
-				const sound = notesa[note.sound];
+				const sound = notesa[note.sound] ;
 				const scale = sound[1];
 				let duration = this.getNotationForPaint(note.duration);
 				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: duration });
+				if (note.accidental) {
+					item.addAccidental(0, new VF.Accidental("#"));
+				}
 				currentBar.push(item);
 			}
 			let beams;
@@ -310,8 +313,10 @@ class App extends Component {
 			const notes = song[i].notes; // measure notes
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
-				const sound = notesa[note.sound];
-				
+				let sound = notesa[note.sound];
+				if (note.accidental) {
+					sound = sound.slice(0, 1) + ("#") + sound.slice(1 + 0)
+				}
 				let duration = this.getNotationForPlay(note.duration);
 				newSong.push([i + ":" + currentTempo, sound, duration]);
 				currentTempo += note.duration;	
