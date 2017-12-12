@@ -10,14 +10,10 @@
   width: 100%;
 }
 
-.panel {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
 .song-container {
+  display: block;
+  text-align: center;
   width: 100%;
-  word-break: break-all;
   overflow: hidden;
   background: white;
 }
@@ -34,4 +30,39 @@ h3 {
 #boo {
   margin: 1em 1em;
   border: 1px solid black;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 100%;
+}
+.panel > section {
+  width: 90%;
+  height: 300px;
+  background: #DDDDDD;
+  margin: 0 auto;
+  text-align: left;
+  padding: 1em 1em;
+  overflow: scroll;
+}
+.panel > nav {
+  height: 50px;
+  margin-top: 10px;
+}
+.panel > nav > button {
+  padding: 1em 1em;
+  border-radius: 5px;
+}
+
+.hideBar {
+  transform:  translate(-50%, -330px);
+  transition: transform 0.5s linear;
+}
+
+.showBar {
+  transition: transform 0.5s linear;
 }

@@ -82,3 +82,41 @@ export const MAX_RADIUS = 40;
 export const MIN_RADIUS = 10;
 export const HEIGHT = window.innerHeight - 5;
 export const WIDTH = window.innerWidth -15;
+
+export function getNotationForPaint(duration) {
+    switch (duration) {
+        case 4:
+            return 'w';
+        case 2:
+            return 'h';
+        case 1:
+            return 'q';
+        case 0.5:
+            return '8';
+        case 0.25:
+            return '16';
+        case 0.125:
+            return '32';
+        default:
+            break;
+    }
+}
+
+export function getNotationForPlay(duration) {
+    switch (duration) {
+        case 4:
+            return '1m';
+        case 2:
+            return '2n';
+        case 1:
+            return '4n';
+        case 0.5:
+            return '8t';
+        case 0.25:
+            return '16t';
+        case 0.125:
+            return '32t';
+        default:
+            break;
+    }
+};
