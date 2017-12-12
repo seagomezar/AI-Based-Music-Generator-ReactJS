@@ -33,7 +33,6 @@ class App extends Component {
 		this.addCircles = this.addCircles.bind(this);
 		this.handlePlaySong = this.handlePlaySong.bind(this);
 		this.bringToTop = this.bringToTop.bind(this);
-		this.handleChange = this.handleChange.bind(this);
 		this.handleGenerate = this.handleGenerate.bind(this);
 		this.handleStopSong = this.handleStopSong.bind(this);
 		this.paintSong = this.paintSong.bind(this);
@@ -57,18 +56,7 @@ class App extends Component {
 	componentDidMount() {
 		const allNotes = generateAllNotes();
 		this.addCircles(allNotes);
-	}
-
-	handleChange(event) {
-		let fieldName = event.target.name;
-		let fieldValue;
-		if (fieldName === 'notes' || fieldName === 'figures') {
-			fieldValue = event.target.value.split(',');
-			this.setState({ [fieldName]: fieldValue });
-		} else {
-			fieldValue = event.target.value;
-			this.setState({ [fieldName]: fieldValue });
-		}
+		this.handleGenerate();
 	}
 
 	handleGenerate() {
@@ -128,17 +116,19 @@ class App extends Component {
 		div.setAttribute('id', 'boo');
 		parent.appendChild(div);
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-		renderer.resize(500, (bars / 2) * 135);
+		const measuresPerLine = Math.floor(WIDTH/250);
+		renderer.resize(WIDTH, (bars / measuresPerLine) * 150);
 		var context = renderer.getContext();
-		var stave = new VF.Stave(10, 40, 240);
+		var stave = new VF.Stave(10, 40, 250);
 		stave.addClef("treble").addTimeSignature("4/4");
+		
 		for (let i = 0; i < song.length; i++) {
 			const notes = song[i].notes; // measure notes
 			let x = stave.width + stave.x;
 			let y = stave.y;
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
-				const sound = NICE_SONGS[1][note.sound] ;
+				const sound = NICE_SONGS[1][note.sound];
 				const scale = sound[1];
 				let duration = this.getNotationForPaint(note.duration);
 				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: duration });
@@ -148,19 +138,19 @@ class App extends Component {
 				currentBar.push(item);
 			}
 			let beams;
-			if (i === song.length-1){
+			if (i === song.length - 1) {
 				stave.setEndBarType(VF.Barline.type.END);
 				stave.setContext(context).draw();
 				beams = VF.Beam.generateBeams(currentBar);
 				VF.Formatter.FormatAndDraw(context, stave, currentBar);
-				beams.forEach(function(b) {b.setContext(context).draw()});
+				beams.forEach(function (b) { b.setContext(context).draw() });
 			}
 			else {
 				stave.setContext(context).draw();
 				beams = VF.Beam.generateBeams(currentBar);
 				VF.Formatter.FormatAndDraw(context, stave, currentBar);
-				beams.forEach(function(b) {b.setContext(context).draw()});
-				if ( (i+1)%2 === 0) {
+				beams.forEach(function (b) { b.setContext(context).draw() });
+				if ((i + 1) % 5 === 0) {
 					y = stave.y + 120;
 					x = 10;
 					stave = new VF.Stave(x, y, 220);
@@ -169,11 +159,11 @@ class App extends Component {
 					stave = new VF.Stave(x, y, 220);
 				}
 			}
-			currentBar = [];	
+			currentBar = [];
 		}
 	}
 
-	translateForTone(song){
+	translateForTone(song) {
 		const newSong = [];
 		for (let i = 0; i < song.length; i++) {
 			let currentTempo = 0;
@@ -186,7 +176,7 @@ class App extends Component {
 				}
 				let duration = this.getNotationForPlay(note.duration);
 				newSong.push([i + ":" + currentTempo, sound, duration]);
-				currentTempo += note.duration;	
+				currentTempo += note.duration;
 			}
 
 		}
@@ -237,35 +227,12 @@ class App extends Component {
 			<div>
 				<svg height={this.height + 'px'} width={this.width + 'px'} className="svg">{this.state.circles}</svg>
 				<div className="panel">
-					<div className="params">
-						<div>
-							Speed: 	<input name="speed" type="number" min="1" max="400"
-								onChange={this.handleChange} value={this.state.speed} /> BPM
-						</div>
-						<div>
-							Duration: 	<input name="duration" type="number" min="1" max="400"
-								onChange={this.handleChange} value={this.state.duration} /> Measures
-						</div>
-					</div>
-					<div className="buttons">
-						<div>
-							<button onClick={this.handleGenerate}>Generate Melody</button>
-						</div>
-						<div className="song-container">
-							<h3>Generated {this.state.creationDate}</h3>
-							<div id="boo"></div>
-						</div>
-						{(this.state.generated) ? '' : ''}
-						{(this.state.generated && !this.state.isPlaying) ? <div>
-							<button onClick={this.handlePlaySong}>Play Melody</button>
-						</div> : ''}
-						{(this.state.generated && this.state.isPlaying) ? <div>
-							<button onClick={this.handleStopSong}>Stop Melody</button>
-						</div> : ''}
+					<div className="song-container">
+						<h3>Generated {this.state.creationDate}</h3>
+						<div id="boo"></div>
 					</div>
 				</div>
 			</div>
-
 		);
 	}
 

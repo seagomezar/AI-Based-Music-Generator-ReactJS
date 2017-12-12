@@ -81,4 +81,4 @@ export const ALL_DURATIONS = [
 export const MAX_RADIUS = 40;
 export const MIN_RADIUS = 10;
 export const HEIGHT = window.innerHeight - 5;
-export const WIDTH = window.innerWidth;
+export const WIDTH = window.innerWidth -15;
