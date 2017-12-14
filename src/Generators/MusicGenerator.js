@@ -25,7 +25,7 @@
  */
 // DATA STRUCTURES DESCRIPTION //
 
-import {NICE_SONGS, ALL_DURATIONS} from "../Constants";
+import {CURRENT_SOUNDS, ALL_DURATIONS} from "../Constants";
 
 /** 
  * @function isValidMeasure(@argument Measure) @returns boolean 
@@ -45,7 +45,7 @@ function isValidMeasure(measure) {
  */
 function getRandomSound(setOfSounds) {
   const randomNote = Math.floor(setOfSounds.length - Math.random() * setOfSounds.length);
-  return randomNote;
+  return { index: randomNote, sound: setOfSounds[randomNote] };
 }
 
 /** 
@@ -69,11 +69,12 @@ function getRandomDuration(setOfDurations, availableDuration) {
  * This function returns a random Note with a duration less or equal to available duration
  */
 function generateNote(availableDuration) {
+  const sound = getRandomSound(CURRENT_SOUNDS);
   return {
-    sound: getRandomSound(NICE_SONGS[1]),
+    sound: sound.index,
     duration: getRandomDuration(ALL_DURATIONS, availableDuration),
     position: null,
-    accidental: Boolean(Math.random() >= 0.5)
+    accidental: Boolean(~sound.sound.indexOf('#'))
   }
 }
 
@@ -142,7 +143,7 @@ export function generateMusicAndTempo(duration, posibleNotes, possibleFigures) {
     const tempo = getRandomFigure(ALL_DURATIONS);
     let figure = '1q';
     currentTempo += tempo;
-    song.push(["0:" + currentTempo, getRandomNote(NICE_SONGS[0]), figure]);
+    song.push(["0:" + currentTempo, getRandomNote(CURRENT_SOUNDS), figure]);
   }
   return song;
 }

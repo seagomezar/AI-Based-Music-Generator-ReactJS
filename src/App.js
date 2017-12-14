@@ -4,7 +4,7 @@ import Panel from './Panel/Panel';
 import Song from './Song/Song';
 import Visualizator from './Visualizator/Visualizator';
 import { generateSong } from './Generators/MusicGenerator';
-import { NICE_SONGS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay } from './Constants';
+import { CURRENT_SOUNDS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay } from './Constants';
 import './App.css';
 import moment from 'moment';
 
@@ -63,10 +63,7 @@ class App extends Component {
 			const notes = song[i].notes; // measure notes
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
-				let sound = NICE_SONGS[1][note.sound];
-				if (note.accidental) {
-					sound = sound.slice(0, 1) + ("#") + sound.slice(1 + 0)
-				}
+				let sound = CURRENT_SOUNDS[note.sound];
 				let duration = getNotationForPlay(note.duration);
 				newSong.push([i + ":" + currentTempo, sound, duration]);
 				currentTempo += note.duration;

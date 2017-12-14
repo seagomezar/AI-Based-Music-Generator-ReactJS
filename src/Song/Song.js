@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NICE_SONGS, WIDTH, getNotationForPaint } from '../Constants'
+import { CURRENT_SOUNDS, WIDTH, getNotationForPaint } from '../Constants'
 import Vex from 'vexflow';
 import './Song.css';
 
@@ -37,10 +37,13 @@ class Song extends Component {
 			let y = stave.y;
 			for (let j = 0; j < notes.length; j++) {
 				const note = notes[j];
-				const sound = NICE_SONGS[1][note.sound];
-				const scale = sound[1];
+				const sound = CURRENT_SOUNDS[note.sound];
+				let scale = sound[1];
+				if (note.accidental) {
+					scale = sound[2];
+				}
 				let duration = getNotationForPaint(note.duration);
-				let item = new VF.StaveNote({ keys: [sound[0] + '/' + scale], duration: duration });
+				let item = new VF.StaveNote({ keys: [sound[0].replace('#', '') + '/' + scale], duration: duration });
 				if (note.accidental) {
 					item.addAccidental(0, new VF.Accidental("#"));
 				}

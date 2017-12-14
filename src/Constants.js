@@ -70,12 +70,30 @@ export const NICE_SONGS = [
     'C6', 'D6', 'E6'] 
 ];
 
+function setScale(scale, octave) {
+    let setOfNotes = scale;
+    setOfNotes = setOfNotes.map(e => {
+        return e + octave;
+    });
+    console.log(setOfNotes);
+    var a;
+    if (setOfNotes[setOfNotes.length - 1].length === 3) {
+         a = setOfNotes[setOfNotes.length - 1][0] + setOfNotes[setOfNotes.length - 1][1] + String(octave + 1);
+    } else {
+         a = setOfNotes[setOfNotes.length - 1][0] + setOfNotes[setOfNotes.length - 1][1] + String(octave + 1);
+    }
+    setOfNotes[setOfNotes.length - 1] = a;
+    return setOfNotes;
+}
+
+export const CURRENT_SOUNDS = setScale(MAJOR_SCALES.D, 4);
+
 export const ALL_DURATIONS = [
     2, 
-    4, 
+    // 4, 
     1, 
     0.5, 
-    0.25
+    // 0.25
 ];
 
 export const MAX_RADIUS = 40;
