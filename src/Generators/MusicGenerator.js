@@ -25,7 +25,7 @@
  */
 // DATA STRUCTURES DESCRIPTION //
 
-import {NICE_SONGS, ALL_DURATIONS} from "./Constants";
+import {NICE_SONGS, ALL_DURATIONS} from "../Constants";
 
 /** 
  * @function isValidMeasure(@argument Measure) @returns boolean 

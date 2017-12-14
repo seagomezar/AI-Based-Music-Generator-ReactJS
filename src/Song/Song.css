@@ -1,0 +1,17 @@
+.song-container {
+    display: block;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    background: white;
+  }
+  
+  
+  h3 {
+    margin-bottom: 0;
+  }
+  
+  #boo {
+    margin: 1em 1em;
+    border: 1px solid black;
+  }

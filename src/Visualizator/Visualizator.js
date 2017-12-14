@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { generateAllNotes } from './MusicGenerator';
-import { generateCircle } from './VisualGenerator';
-import { HEIGHT, WIDTH } from './Constants';
+import { generateAllNotes } from '../Generators/MusicGenerator';
+import { generateCircle } from '../Generators/VisualGenerator';
+import { HEIGHT, WIDTH } from '../Constants';
+import './Visualizator.css';
 
 class Visualizator extends Component {
 

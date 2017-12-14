@@ -1,5 +1,5 @@
 import React from 'react';
-import {MIN_RADIUS, WIDTH, HEIGHT, MAX_RADIUS} from './Constants';
+import {MIN_RADIUS, WIDTH, HEIGHT, MAX_RADIUS} from '../Constants';
 
 function getRandomX() {
     const MAX = WIDTH - MIN_RADIUS;
