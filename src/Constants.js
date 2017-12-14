@@ -87,7 +87,7 @@ function pickRandomProperty(obj) {
     return result;
 }
 
-export const CURRENT_SCALE = pickRandomProperty(MAJOR_SCALES);
+export let CURRENT_SCALE = pickRandomProperty(MAJOR_SCALES);
 
 export const CURRENT_SOUNDS = setScale(MAJOR_SCALES[CURRENT_SCALE], 4);
 
@@ -98,6 +98,11 @@ export const ALL_DURATIONS = [
     0.5, 
     // 0.25
 ];
+
+export function changeScale(scale) {
+    CURRENT_SCALE = scale;
+    console.log(CURRENT_SCALE);
+}
 
 export const MAX_RADIUS = 40;
 export const MIN_RADIUS = 10;

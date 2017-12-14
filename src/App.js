@@ -4,7 +4,7 @@ import Panel from './Panel/Panel';
 import Song from './Song/Song';
 import Visualizator from './Visualizator/Visualizator';
 import { generateSong } from './Generators/MusicGenerator';
-import { CURRENT_SOUNDS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay } from './Constants';
+import { CURRENT_SOUNDS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay, changeScale } from './Constants';
 import './App.css';
 import moment from 'moment';
 
@@ -12,7 +12,7 @@ class App extends Component {
 
 	constructor() {
 		super();
-		
+
 		// Set the initial state
 		this.state = {
 			speed: 100,
@@ -33,6 +33,7 @@ class App extends Component {
 		this.bringToTop = this.bringToTop.bind(this);
 		this.handleGenerate = this.handleGenerate.bind(this);
 		this.handleStopSong = this.handleStopSong.bind(this);
+		this.handleRun = this.handleRun.bind(this);
 	}
 
 	bringToTop(targetElement) {
@@ -43,15 +44,15 @@ class App extends Component {
 
 	componentDidMount() {
 		this.handleGenerate();
-		setTimeout(()=>{
+		setTimeout(() => {
 			this.handlePlaySong();
 		}, 1000);
-		
+
 	}
 
 	handleGenerate() {
 		const song = generateSong(this.state.duration);
-		this.setState({ song: song });
+		this.setState({ song });
 		this.setState({ generated: true });
 		this.setState({ creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss') });
 	}
@@ -113,12 +114,32 @@ class App extends Component {
 		this.setState({ isPlaying: false });
 	}
 
+	handleRun(speed, duration, scale) {
+		this.handleStopSong();
+		this.setState({});
+		console.log(speed, duration, scale);
+		changeScale(scale);
+
+		this.setState({
+			duration,
+			speed,
+			song: []
+		}, ()=>{
+			console.log(this.state);
+		});
+		
+		// this.handleGenerate();
+	}
+
 	render() {
 		return (
 			<div>
-				<Panel tempo={this.state.speed} duration={this.state.duration}/>
+				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} />
 				<Visualizator />
-				<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} />
+				{(this.state.song) ?
+					<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} /> :
+					<p>Loading ...</p>}
+
 			</div>
 		);
 	}

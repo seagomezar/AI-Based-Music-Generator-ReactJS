@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Panel.css';
-import { MAJOR_SCALES} from '../Constants';
+import { MAJOR_SCALES } from '../Constants';
 class Panel extends Component {
 
     constructor() {
@@ -8,10 +8,12 @@ class Panel extends Component {
         this.state = {
             isTopBarShowed: false,
             duration: 0,
-            speed: 0
+            speed: 0,
+            scale: "C"
         };
         this.hideTopBar = this.hideTopBar.bind(this);
         this.showTopBar = this.showTopBar.bind(this);
+        this.bindToState = this.bindToState.bind(this);
     }
 
     hideTopBar() {
@@ -40,6 +42,16 @@ class Panel extends Component {
         })
     }
 
+    bindToState(event) {
+        if(event.target.name === 'duration') {
+            this.setState({duration: Number(event.target.value)});
+        } else if(event.target.name === 'speed') {
+            this.setState({speed: Number(event.target.value)});
+        } else if(event.target.name === 'scale') {
+            this.setState({scale: event.target.value});
+        }
+    }
+
     render() {
         return (<aside className="panel hideBar" id="panel" >
             <section>
@@ -58,28 +70,27 @@ class Panel extends Component {
                     Of course, you can! there is the set of controls I can give you!. enjoy!
                     I will add more soon..
                 </p>
-                <form>
-                    <div>
-                        <label>Speed: </label>
-                        <input type="number" size="3" value={this.state.speed} name="speed" />
-                    </div>
-                    <div>
-                        <label># of Measures: </label>
-                        <input type="number" size="3" value={this.state.duration} name="duration" />
-                    </div>
-                    <label>Scale base: </label>
-                    <select>
+                <div>
+                    <label>Speed: </label>
+                    <input type="number" size="3" value={this.state.speed} name="speed" onChange={this.bindToState} />
+                </div>
+                <div>
+                    <label># of Measures: </label>
+                    <input type="number" size="3" value={this.state.duration} name="duration" onChange={this.bindToState} />
+                </div>
+                <label>Scale base: </label>
+                <select name="scale" value={this.state.scale} onChange={this.bindToState}>
                     {
-                        Object.keys(MAJOR_SCALES).map((e)=>{
+                        Object.keys(MAJOR_SCALES).map((e) => {
                             return <option value={e} key={e}>{e} Major</option>;
                         })
 
                     }
-                    </select>
-                    <div>
-                        <button>Run this</button>
-                    </div>
-                </form>
+                </select>
+                <div>
+                    <button onClick={()=>{
+                        this.props.handleRun(this.state.speed, this.state.duration, this.state.scale)}}>Run this</button>
+                </div>
                 <h2>How I built this?</h2>
                 <p>
                     Ok for the implementation I'm using Javascript and react.js with <a href="">Tone.js</a> for the sounds and the timeline to play music,

@@ -81,7 +81,11 @@ class Song extends Component {
         setTimeout(() => {
             this.paintSong(this.props.song, this.props.tempo);
         }, 1000);
-    }
+	}
+	
+	componentWillUnmount() {
+		console.log("ADJLSAJDKLASD");
+	}
 
     render() {
 		return (
