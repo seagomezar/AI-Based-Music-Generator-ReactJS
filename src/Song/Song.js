@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CURRENT_SOUNDS, WIDTH, getNotationForPaint } from '../Constants'
+import { CURRENT_SOUNDS, WIDTH, getNotationForPaint, CURRENT_SCALE } from '../Constants'
 import Vex from 'vexflow';
 import './Song.css';
 
@@ -14,7 +14,7 @@ class Song extends Component {
         this.paintSong = this.paintSong.bind(this);
     }
 
-    paintSong(song) {
+    paintSong(song, tempo) {
 		const VF = Vex.Flow;
 		let bars = song.length;
 		let currentBar = [];
@@ -29,7 +29,8 @@ class Song extends Component {
 		renderer.resize(WIDTH, (bars / measuresPerLine) * 150);
 		var context = renderer.getContext();
 		var stave = new VF.Stave(10, 40, 250);
-		stave.addClef("treble").addTimeSignature("4/4");
+		stave.addClef("treble").addTimeSignature("4/4")
+		.setTempo({ duration: 'q', bpm: tempo }, -30);
 
 		for (let i = 0; i < song.length; i++) {
 			const notes = song[i].notes; // measure notes
@@ -78,14 +79,15 @@ class Song extends Component {
     
     componentDidMount() {
         setTimeout(() => {
-            this.paintSong(this.props.song);
+            this.paintSong(this.props.song, this.props.tempo);
         }, 1000);
     }
 
     render() {
 		return (
             <section className="song-container">
-                <h3>Generated {this.props.creationDate}</h3>
+				<h3>Generated {this.props.creationDate}</h3>
+				<p>Improvisation created over {CURRENT_SCALE} Major Scale </p>
                 <div id="boo"></div>
             </section>);
     }

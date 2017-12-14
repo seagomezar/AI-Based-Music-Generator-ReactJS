@@ -116,9 +116,9 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Panel/>
+				<Panel tempo={this.state.speed} duration={this.state.duration}/>
 				<Visualizator />
-				<Song song={this.state.song} creationDate={this.state.creationDate}/>
+				<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} />
 			</div>
 		);
 	}

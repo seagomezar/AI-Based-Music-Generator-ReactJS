@@ -51,14 +51,14 @@ export const ALL_FULL_NOTES = [
 ];
 
 export const MAJOR_SCALES = {
-    "C": ["C", "D", "E", "F", "G", "A", "B", "C"],
-    "D": ["D", "E", "F#", "G", "A", "B", "C#", "D"],
-    "E": ["E", "F#", "G#", "A", "B", "C#", "D#", "E"],
-    "F": ["F", "G", "A", "A#", "C", "D", "E", "F"],
-    "G": ["G", "A", "B", "C", "D", "E", "F#", "G"],
-    "A": ["A", "B", "C#", "D", "E", "F#", "G#", "A"],
-    "B": ["B", "C#", "D#", "E", "F#", "G#", "A#", "B"],
-    "F#" : ["F#", "G#", "A#", "C#", "D#", "E#", "F"],
+    "C": ["C1", "D1", "E1", "F1", "G1", "A1", "B1", "C2"],
+    "D": ["D1", "E1", "F#1", "G1", "A1", "B1", "C#2", "D2"],
+    "E": ["E1", "F#1", "G#1", "A1", "B1", "C#2", "D#2", "E2"],
+    "F": ["F1", "G1", "A1", "A#1", "C2", "D2", "E2", "F2"],
+    "G": ["G1", "A1", "B1", "C2", "D2", "E2", "F#2", "G2"],
+    "A": ["A1", "B1", "C#2", "D2", "E2", "F#2", "G#2", "A2"],
+    "B": ["B1", "C#2", "D#2", "E2", "F#2", "G#2", "A#2", "B2"],
+    "F#" : ["F#1", "G#1", "A#1", "C#2", "D#2", "E#2", "F2"],
 };
 
 export const NICE_SONGS = [
@@ -71,22 +71,25 @@ export const NICE_SONGS = [
 ];
 
 function setScale(scale, octave) {
-    let setOfNotes = scale;
-    setOfNotes = setOfNotes.map(e => {
-        return e + octave;
+    let setOfNotes = scale.map(e => {
+        return e.replace("2", octave+1).replace("1", octave);
     });
     console.log(setOfNotes);
-    var a;
-    if (setOfNotes[setOfNotes.length - 1].length === 3) {
-         a = setOfNotes[setOfNotes.length - 1][0] + setOfNotes[setOfNotes.length - 1][1] + String(octave + 1);
-    } else {
-         a = setOfNotes[setOfNotes.length - 1][0] + setOfNotes[setOfNotes.length - 1][1] + String(octave + 1);
-    }
-    setOfNotes[setOfNotes.length - 1] = a;
     return setOfNotes;
 }
 
-export const CURRENT_SOUNDS = setScale(MAJOR_SCALES.D, 4);
+function pickRandomProperty(obj) {
+    var result;
+    var count = 0;
+    for (var prop in obj)
+        if (Math.random() < 1/++count)
+           result = prop;
+    return result;
+}
+
+export const CURRENT_SCALE = pickRandomProperty(MAJOR_SCALES);
+
+export const CURRENT_SOUNDS = setScale(MAJOR_SCALES[CURRENT_SCALE], 4);
 
 export const ALL_DURATIONS = [
     2, 
@@ -98,6 +101,8 @@ export const ALL_DURATIONS = [
 
 export const MAX_RADIUS = 40;
 export const MIN_RADIUS = 10;
+export const MAX_SPEED = 220;
+export const MIN_SPEED = 40;
 export const HEIGHT = window.innerHeight - 5;
 export const WIDTH = window.innerWidth -15;
 

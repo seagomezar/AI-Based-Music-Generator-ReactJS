@@ -1,39 +1,49 @@
 import React, { Component } from 'react';
 import './Panel.css';
-
+import { MAJOR_SCALES} from '../Constants';
 class Panel extends Component {
-    
-        constructor() {
-            super();
-            this.state = {
-                isTopBarShowed: false
-            };
-            this.hideTopBar = this.hideTopBar.bind(this);
-            this.showTopBar = this.showTopBar.bind(this);
-        }
 
-        hideTopBar() {
-            const panel = document.getElementById("panel");
-            panel.classList.remove("showBar");
-            panel.classList.add("hideBar");
-            this.setState({
-                isTopBarShowed: false
-            });
-        }
-    
-        showTopBar() {
-            const panel = document.getElementById("panel");
-            panel.classList.remove("hideBar");
-            panel.classList.add("showBar");
-            this.setState({
-                isTopBarShowed: true
-            });
-        }
+    constructor() {
+        super();
+        this.state = {
+            isTopBarShowed: false,
+            duration: 0,
+            speed: 0
+        };
+        this.hideTopBar = this.hideTopBar.bind(this);
+        this.showTopBar = this.showTopBar.bind(this);
+    }
 
-        render() {
-            return (<aside className="panel hideBar" id="panel" >
+    hideTopBar() {
+        const panel = document.getElementById("panel");
+        panel.classList.remove("showBar");
+        panel.classList.add("hideBar");
+        this.setState({
+            isTopBarShowed: false
+        });
+    }
+
+    showTopBar() {
+        const panel = document.getElementById("panel");
+        panel.classList.remove("hideBar");
+        panel.classList.add("showBar");
+        this.setState({
+            isTopBarShowed: true
+        });
+    }
+
+    componentDidMount() {
+        console.log(this.props);
+        this.setState({
+            duration: this.props.duration,
+            speed: this.props.tempo
+        })
+    }
+
+    render() {
+        return (<aside className="panel hideBar" id="panel" >
             <section>
-                <h2>What am I listening?</h2>
+                <h2>What are you listening?</h2>
                 <p>
                     A computer created song based on bethoven compositions, do you like it?
                 </p>
@@ -43,50 +53,38 @@ class Panel extends Component {
                     Basically, I am trying to create music using artificial inteligence and a set of patters
                     to create differend kind of musical genders and author based composition.
                 </p>
-                <h2>Can I manipulate what I'm listening?</h2>
+                <h2>Can you manipulate what you're listening?</h2>
                 <p>
-                    Of course my friend there is the set of controls I can give you!. enjoy!
+                    Of course, you can! there is the set of controls I can give you!. enjoy!
+                    I will add more soon..
                 </p>
                 <form>
                     <div>
                         <label>Speed: </label>
-                        <input type="number" size="3" />
+                        <input type="number" size="3" value={this.state.speed} name="speed" />
                     </div>
                     <div>
                         <label># of Measures: </label>
-                        <input type="number" size="3" />
+                        <input type="number" size="3" value={this.state.duration} name="duration" />
                     </div>
-                    <div>	<label>Gender like: </label>
-                        <select>
-                            <option>Jazz</option>
-                            <option>Rock</option>
-                            <option>Clasical </option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Author like: </label>
-                        <select>
-                            <option>Bethoven</option>
-                            <option>Mozart</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Scale base: </label>
-                        <select>
-                            <option>C Major</option>
-                            <option>D Major</option>
-                            <option>G Major</option>
-                        </select>
-                    </div>
+                    <label>Scale base: </label>
+                    <select>
+                    {
+                        Object.keys(MAJOR_SCALES).map((e)=>{
+                            return <option value={e} key={e}>{e} Major</option>;
+                        })
+
+                    }
+                    </select>
                     <div>
                         <button>Run this</button>
                     </div>
                 </form>
-                <h2>How you built this?</h2>
+                <h2>How I built this?</h2>
                 <p>
                     Ok for the implementation I'm using Javascript and react.js with <a href="">Tone.js</a> for the sounds and the timeline to play music,
                     <a href="">Salamander Piano</a> to build and play the right piano sounds , and <a href="">Vexflow</a> to pain the score you see below.
-                    For the hard part which is artificial inteligence I'm using synaptic.js which allow me to create and train a simple neural network which
+                    For the hard part which is artificial inteligence I'm using <a href="">synaptic.js</a> which allow me to create and train a simple neural network which
                     is able to create the composition for you. Here is the <a href="">link to the source code</a>
                 </p>
                 <h2>Wait... Why react?</h2>
@@ -106,7 +104,7 @@ class Panel extends Component {
                 }
             </nav>
         </aside>);
-        }
+    }
 }
 
 export default Panel;
