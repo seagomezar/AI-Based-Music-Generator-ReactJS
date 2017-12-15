@@ -20,7 +20,8 @@ class App extends Component {
 			generated: false,
 			song: [],
 			isPlaying: false,
-			creationDate: 0
+			creationDate: 0,
+			visualizatorType: "circles"
 		};
 
 		// Set the piano instrument
@@ -34,6 +35,7 @@ class App extends Component {
 		this.handleGenerate = this.handleGenerate.bind(this);
 		this.handleStopSong = this.handleStopSong.bind(this);
 		this.handleRun = this.handleRun.bind(this);
+		this.handleChangeVisualization = this.handleChangeVisualization.bind(this);
 	}
 
 	bringToTop(targetElement) {
@@ -75,17 +77,9 @@ class App extends Component {
 		return newSong;
 	}
 
-	handlePlaySong() {
-		const song = this.translateForTone(this.state.song);
-		console.log(song);
-		Tone.Transport.cancel();
-		Tone.Transport.clear();
-		new Tone.Part((time, note, duration) => {
-			this.piano.triggerAttackRelease(note, duration, time);
-			Tone.Draw.schedule(() => {
-				const element = document.getElementById(note);
-				if (element) {
-					this.bringToTop(element);
+	transformElement(element, kind, note) {
+		if (kind == 'circles') {
+			this.bringToTop(element);
 					const color = element.getAttribute('data-color');
 					const originalRadius = Number(element.getAttribute('r'));
 					element.style.fill = color;
@@ -98,6 +92,32 @@ class App extends Component {
 						element.style.r = originalRadius;
 						element.style.transition = 'all 0.5s';
 					}, 500);
+		} else {
+			if (~note.indexOf("#")) {
+				element.classList.add('black-pressed');
+			 } else {
+				element.classList.add('white-pressed');
+			 }
+			 setTimeout(()=>{
+				element.classList.remove("black-pressed");
+				element.classList.remove("white-pressed");
+			 }, 500);
+		}
+	}
+
+	handlePlaySong() {
+		const song = this.translateForTone(this.state.song);
+		console.log(song);
+		Tone.Transport.cancel();
+		Tone.Transport.clear();
+		new Tone.Part((time, note, duration) => {
+			this.piano.triggerAttackRelease(note, duration, time);
+			Tone.Draw.schedule(() => {
+				const element = document.getElementById(note);
+
+				if (element) {
+					this.transformElement(element, this.state.visualizatorType, note);
+					
 				} else {
 					console.log("CIRCLE_NOT_FOUND", note);
 				}
@@ -136,11 +156,17 @@ class App extends Component {
 		});
 	}
 
+	handleChangeVisualization(type){
+		this.setState({
+			visualizatorType: type
+		});
+	}
+
 	render() {
 		return (
 			<div>
-				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} />
-				<Visualizator />
+				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization}/>
+				<Visualizator type={this.state.visualizatorType} />
 				{
 					(this.state.song.length) ?
 						<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} /> :

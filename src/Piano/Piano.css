@@ -1,0 +1,33 @@
+
+.piano {
+    margin-top: 100px;
+    z-index: 1;
+}
+ul {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 0;
+    position: relative;
+    text-align: center;
+  }
+  li {
+    display: inline-block;
+    border: 1px solid black;
+    height: 80px;
+  }
+  .white {
+    background: white;
+  }
+  .black {
+    background: black;
+    position: absolute;
+    margin: 0px 0 0px -10px;
+    border-left: 2px solid white;
+    border-bot: 2px solid white;
+  }
+  .white-pressed{
+    background: #AAA;
+  }
+  .black-pressed {
+    background: #222;
+  }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { generateAllNotes } from '../Generators/MusicGenerator';
 import { generateCircle } from '../Generators/VisualGenerator';
 import { HEIGHT, WIDTH } from '../Constants';
+import Piano from '../Piano/Piano';
 import './Visualizator.css';
 
 class Visualizator extends Component {
@@ -30,10 +31,13 @@ class Visualizator extends Component {
         this.addCircles(allNotes);
     }
     render() {
-        return <svg 
-            height={this.height + 'px'} 
-            width={this.width + 'px'} 
-            className="svg">{this.state.circles}</svg>
+        return (<div>
+            { (this.props.type == 'circles') ? <svg height={this.height + 'px'}  
+            width={this.width + 'px'}  
+            className="svg">{this.state.circles}</svg>: <Piano />}
+            
+            </div>);
+            
     }
 }
 

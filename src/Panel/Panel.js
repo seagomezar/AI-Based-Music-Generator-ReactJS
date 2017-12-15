@@ -49,6 +49,8 @@ class Panel extends Component {
             this.setState({speed: Number(event.target.value)});
         } else if(event.target.name === 'scale') {
             this.setState({scale: event.target.value});
+        } else if(event.target.name === 'visualizationType') {
+            this.setState({visualizationType: event.target.value});
         }
     }
 
@@ -95,7 +97,25 @@ class Panel extends Component {
                             this.props.handleRun(this.state.speed, this.state.duration, this.state.scale)}}>Run this</button>
                     </div>
                 </div>
-                <h2>How I built this?</h2>
+                <h2>Can you change the visualization?</h2>
+                <p >
+                    Yes you can!, for now I only this visualizations for you:
+                    </p>
+                    <div className="form">
+                        <div>
+                            <label>Visualization: </label>
+                            <select name="visualizationType" value={this.state.visualizationType} onChange={this.bindToState}>
+                                <option value="circles">Circles (Default)</option>
+                                <option value="piano">Piano</option>
+                            </select>
+                        </div>
+                        <div className="button">
+                        <button onClick={()=>{
+                            this.props.handleChangeVisualization(this.state.visualizationType)}}>Run Visualization</button>
+                        </div>
+                    </div>
+                
+                <h2>How did I build this?</h2>
                 <p>
                     Ok for the implementation I'm using Javascript and react.js with <a href="">Tone.js</a> for the sounds and the timeline to play music,
                     <a href="">Salamander Piano</a> to build and play the right piano sounds , and <a href="">Vexflow</a> to pain the score you see below.
