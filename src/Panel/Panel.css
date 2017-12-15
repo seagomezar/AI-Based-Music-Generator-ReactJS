@@ -23,6 +23,24 @@
     padding: 1em 1em;
     border-radius: 5px;
   }
+
+  .form {
+    padding: 1% 1% 1% 1%;
+    border: 1px solid black;
+    width: 25%;
+  }
+  .form > div {
+    margin-bottom: 3%;
+  }
+  .form > div > label {
+    
+    width: 50%;
+    display: inline-block;
+  }
+  .form > .button{
+    text-align: center;
+    margin-top: 10%;
+  }
   
   .hideBar {
     transform:  translate(-50%, -330px);

@@ -52,9 +52,10 @@ class App extends Component {
 
 	handleGenerate() {
 		const song = generateSong(this.state.duration);
-		this.setState({ song });
-		this.setState({ generated: true });
-		this.setState({ creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss') });
+		this.setState({ song ,
+						generated: true,
+						creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss') 
+					});
 	}
 
 	translateForTone(song) {
@@ -115,6 +116,9 @@ class App extends Component {
 	}
 
 	handleRun(speed, duration, scale) {
+		this.setState({
+			fff: true
+		});
 		this.handleStopSong();
 		this.setState({});
 		console.log(speed, duration, scale);
@@ -125,10 +129,11 @@ class App extends Component {
 			speed,
 			song: []
 		}, ()=>{
-			console.log(this.state);
+			this.handleGenerate();
+			setTimeout(() => {
+				this.handlePlaySong();
+			}, 5000);
 		});
-		
-		// this.handleGenerate();
 	}
 
 	render() {
@@ -136,9 +141,11 @@ class App extends Component {
 			<div>
 				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} />
 				<Visualizator />
-				{(this.state.song) ?
-					<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} /> :
-					<p>Loading ...</p>}
+				{
+					(this.state.song.length) ?
+						<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} /> :
+						<p>Loading ...</p>
+				}
 
 			</div>
 		);

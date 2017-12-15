@@ -18,7 +18,7 @@ class Song extends Component {
 		const VF = Vex.Flow;
 		let bars = song.length;
 		let currentBar = [];
-		var div = document.getElementById("boo");
+		var div = document.getElementById("tab");
 		let parent = div.parentNode;
 		parent.removeChild(div);
 		div = document.createElement("div");
@@ -26,7 +26,7 @@ class Song extends Component {
 		parent.appendChild(div);
 		var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 		const measuresPerLine = Math.floor(WIDTH / 250);
-		renderer.resize(WIDTH, (bars / measuresPerLine) * 150);
+		renderer.resize(WIDTH, Math.ceil(bars / measuresPerLine) * 150);
 		var context = renderer.getContext();
 		var stave = new VF.Stave(10, 40, 250);
 		stave.addClef("treble").addTimeSignature("4/4")
@@ -77,14 +77,11 @@ class Song extends Component {
         this.setState({isSong: true});
     }
     
-    componentDidMount() {
+
+	componentWillMount() {
         setTimeout(() => {
             this.paintSong(this.props.song, this.props.tempo);
         }, 1000);
-	}
-	
-	componentWillUnmount() {
-		console.log("ADJLSAJDKLASD");
 	}
 
     render() {
@@ -92,7 +89,7 @@ class Song extends Component {
             <section className="song-container">
 				<h3>Generated {this.props.creationDate}</h3>
 				<p>Improvisation created over {CURRENT_SCALE} Major Scale </p>
-                <div id="boo"></div>
+                <div id="tab"></div>
             </section>);
     }
 }

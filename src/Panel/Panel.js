@@ -57,7 +57,7 @@ class Panel extends Component {
             <section>
                 <h2>What are you listening?</h2>
                 <p>
-                    A computer created song based on bethoven compositions, do you like it?
+                    A computer created song, Do you like it?
                 </p>
                 <h2>What is this?</h2>
                 <p>
@@ -68,28 +68,32 @@ class Panel extends Component {
                 <h2>Can you manipulate what you're listening?</h2>
                 <p>
                     Of course, you can! there is the set of controls I can give you!. enjoy!
-                    I will add more soon..
+                    I will add more soon...
                 </p>
-                <div>
-                    <label>Speed: </label>
-                    <input type="number" size="3" value={this.state.speed} name="speed" onChange={this.bindToState} />
-                </div>
-                <div>
-                    <label># of Measures: </label>
-                    <input type="number" size="3" value={this.state.duration} name="duration" onChange={this.bindToState} />
-                </div>
-                <label>Scale base: </label>
-                <select name="scale" value={this.state.scale} onChange={this.bindToState}>
-                    {
-                        Object.keys(MAJOR_SCALES).map((e) => {
-                            return <option value={e} key={e}>{e} Major</option>;
-                        })
+                <div className="form">
+                    <div>
+                        <label>Speed (BPM): </label>
+                        <input type="number" size="3" value={this.state.speed} name="speed" onChange={this.bindToState} />
+                    </div>
+                    <div>
+                        <label># of Measures: </label>
+                        <input type="number" size="3" value={this.state.duration} name="duration" onChange={this.bindToState} />
+                    </div>
+                    <div>
+                    <label>Scale base: </label>
+                        <select name="scale" value={this.state.scale} onChange={this.bindToState}>
+                            {
+                                Object.keys(MAJOR_SCALES).map((e) => {
+                                    return <option value={e} key={e}>{e} Major</option>;
+                                })
 
-                    }
-                </select>
-                <div>
-                    <button onClick={()=>{
-                        this.props.handleRun(this.state.speed, this.state.duration, this.state.scale)}}>Run this</button>
+                            }
+                        </select>
+                    </div>
+                    <div className="button">
+                        <button onClick={()=>{
+                            this.props.handleRun(this.state.speed, this.state.duration, this.state.scale)}}>Run this</button>
+                    </div>
                 </div>
                 <h2>How I built this?</h2>
                 <p>
