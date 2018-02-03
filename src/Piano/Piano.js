@@ -4,10 +4,6 @@ import './Piano.css';
 
 class Piano extends Component {
 
-    constructor() {
-        super();
-    }
-
     componentDidMount() {
         const totalWidth = window.innerWidth;
         const height = 120;

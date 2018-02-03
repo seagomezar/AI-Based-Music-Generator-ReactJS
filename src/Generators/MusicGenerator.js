@@ -30,14 +30,14 @@ import {CURRENT_SOUNDS, ALL_DURATIONS} from "../Constants";
 /** 
  * @function isValidMeasure(@argument Measure) @returns boolean 
  * This is an utilitary function to determine if the measure is valid or no.
- */
+
 function isValidMeasure(measure) {
   let acumulatedTime = 0;
   measure.notes.forEach((n) => {
     acumulatedTime += n.duration; 
   })
   return acumulatedTime === measure.meter.numerator;
-}
+}*/
 
 /** 
  * @function getRandomSound(@argument setOfSounds: string[]) @returns string 

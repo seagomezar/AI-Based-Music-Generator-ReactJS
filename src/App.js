@@ -48,7 +48,7 @@ class App extends Component {
 		this.handleGenerate();
 		setTimeout(() => {
 			this.handlePlaySong();
-		}, 1000);
+		}, 3000);
 
 	}
 
@@ -78,7 +78,7 @@ class App extends Component {
 	}
 
 	transformElement(element, kind, note) {
-		if (kind == 'circles') {
+		if (kind === 'circles') {
 			this.bringToTop(element);
 					const color = element.getAttribute('data-color');
 					const originalRadius = Number(element.getAttribute('r'));
@@ -107,7 +107,6 @@ class App extends Component {
 
 	handlePlaySong() {
 		const song = this.translateForTone(this.state.song);
-		console.log(song);
 		Tone.Transport.cancel();
 		Tone.Transport.clear();
 		new Tone.Part((time, note, duration) => {
@@ -141,9 +140,7 @@ class App extends Component {
 		});
 		this.handleStopSong();
 		this.setState({});
-		console.log(speed, duration, scale);
 		changeScale(scale);
-
 		this.setState({
 			duration,
 			speed,

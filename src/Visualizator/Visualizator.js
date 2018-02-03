@@ -32,7 +32,7 @@ class Visualizator extends Component {
     }
     render() {
         return (<div>
-            { (this.props.type == 'circles') ? <svg height={this.height + 'px'}  
+            { (this.props.type === 'circles') ? <svg height={this.height + 'px'}  
             width={this.width + 'px'}  
             className="svg">{this.state.circles}</svg>: <Piano />}
             

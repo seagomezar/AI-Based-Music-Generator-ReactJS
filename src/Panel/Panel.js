@@ -35,7 +35,6 @@ class Panel extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
         this.setState({
             duration: this.props.duration,
             speed: this.props.tempo
@@ -63,8 +62,8 @@ class Panel extends Component {
                 </p>
                 <h2>What is this?</h2>
                 <p>
-                    Well, It is a interesting questions, I will try to describe the better for you..<br />
-                    Basically, I am trying to create music using artificial inteligence and a set of patters
+                    Well, It is a interesting question. I will try to describe the better for you..<br />
+                    Basically, I am trying to create music using a set of patterns
                     to create differend kind of musical genders and author based composition.
                 </p>
                 <h2>Can you manipulate what you're listening?</h2>
@@ -117,17 +116,13 @@ class Panel extends Component {
                 
                 <h2>How did I build this?</h2>
                 <p>
-                    Ok for the implementation I'm using Javascript and react.js with <a href="">Tone.js</a> for the sounds and the timeline to play music,
-                    <a href="">Salamander Piano</a> to build and play the right piano sounds , and <a href="">Vexflow</a> to pain the score you see below.
-                    For the hard part which is artificial inteligence I'm using <a href="">synaptic.js</a> which allow me to create and train a simple neural network which
-                    is able to create the composition for you. Here is the <a href="">link to the source code</a>
+                    Ok for the implementation I'm using Javascript and react.js with <a href="https://tonejs.github.io/" >Tone.js</a> for the sounds and the timeline to play music,
+                    <a href="https://musical-artifacts.com/artifacts/3" > Salamander Piano</a> to build and play the right piano sounds , and <a href="http://www.vexflow.com/" >Vexflow</a> to pain the score you see below.
+                    Here is the <a href="https://github.com/seagomezar/AI-Based-Music-Generator-ReactJS" >link to the source code</a>.
                 </p>
-                <h2>Wait... Why react?</h2>
-                <p>Oh man, no problem, here is the link to the <a href="">angular project</a>, <a href="">vue project</a>, and <a href="">vanilla js project</a>.</p>
                 <h2>What next for this project?</h2>
                 <p>
-                    Actually I don't have idea, What do you like? more author based compositions?,
-                    more genders?, different kind of artificial inteligence structures like Marcov Models?,
+                    Actually I want to include different kind of artificial inteligence structures like Marcov Models, Neural networks,
                     Deep Machine Learning? Shoot me with your ideas with a PR!
                 </p>
             </section>

@@ -74,7 +74,6 @@ function setScale(scale, octave) {
     let setOfNotes = scale.map(e => {
         return e.replace("2", octave+1).replace("1", octave);
     });
-    console.log(setOfNotes);
     return setOfNotes;
 }
 
@@ -101,9 +100,7 @@ export const ALL_DURATIONS = [
 
 export function changeScale(scale) {
     CURRENT_SCALE = scale;
-    console.log("CURRENT_SCALE", CURRENT_SCALE);
     CURRENT_SOUNDS = setScale(MAJOR_SCALES[CURRENT_SCALE], 4);
-    console.log("CURRENT_SOUNDS", CURRENT_SOUNDS);
 }
 
 export const MAX_RADIUS = 40;
