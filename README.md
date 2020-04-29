@@ -13,6 +13,13 @@ basadas en patrones músicales básicos. Algunos de estos patrones son:
 
 También se puede visualizar la partitura de la composición generada y además se ofrece una visualización usando SVG.
 
+Algunos codepen con experimentos que soportan las generaciones:
+
+- [Escalas y canciones](https://codepen.io/seagomezar/pen/vRxgvP)
+- [Improvisación teórica](https://codepen.io/seagomezar/pen/ZagdMZ?editors)
+
+[Otro repositorio con experimentos sobre Vexflow](https://github.com/seagomezar/vexflowexamples)
+
 Aquí puedes ver la presentación donde se expone este proyecto:
 [Link a las diapositivas](https://docs.google.com/presentation/d/13daem4eBm7uj1aPwO-Anwu8KBKRvI4dvgKW5HjOWSos/edit?usp=sharing)
 
@@ -35,7 +42,7 @@ Ejecuta `npm install` para instalar las dependencias.
 
 ### Ejecución ⚙️
 
-Ejecuta `npm run dev` para un servidor de dev. Navega a `http://localhost:300/`. La aplicación se recargará automáticamente cuando hagas algun cambio en el código.
+Ejecuta `npm run dev` para un servidor de dev. Navega a `http://localhost:3000/`. La aplicación se recargará automáticamente cuando hagas algun cambio en el código.
 
 ## Construido con 🛠️
 
