@@ -52,7 +52,7 @@ Ejecuta `npm run dev` para un servidor de dev. Navega a `http://localhost:300/`.
 - En realidad, quiero incluir diferentes tipos de estructuras de inteligencia artificial como modelos de Markov, redes neuronales, aprendizaje automático profundo para mejorar la calidad de las composiciones e incluso empezar a explorar armonias.
 - No descarto convertir esto en un proyecto musical educativo.
 - También podría crear composiciones orquestales completas de acuerdo a un genero o tema
-- Cuentame con tus ideas con un PR!
+- Cuentame tus ideas con un PR!
 
 ## Expresiones de Gratitud 🎁
 
