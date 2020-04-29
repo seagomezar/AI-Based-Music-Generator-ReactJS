@@ -17,6 +17,7 @@ Algunos codepen con experimentos que soportan las generaciones:
 
 - [Escalas y canciones](https://codepen.io/seagomezar/pen/vRxgvP)
 - [Improvisación teórica](https://codepen.io/seagomezar/pen/ZagdMZ?editors)
+- [VexFlow y Animaciones](https://codepen.io/seagomezar/pen/ExVXMgO)
 
 [Otro repositorio con experimentos sobre Vexflow](https://github.com/seagomezar/vexflowexamples)
 
