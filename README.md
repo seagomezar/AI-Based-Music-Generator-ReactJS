@@ -34,7 +34,7 @@ git clone https://github.com/seagomezar/AI-Based-Music-Generator-ReactJS.git
 
 ### Pre-requisitos 📋
 
-_Ten instalada la última versión de nodeJS que puedes obtener aquí:_
+_Ten instalada la última versión de nodeJS (recomendada v18 o superior) que puedes obtener aquí:_
 https://nodejs.org/es/
 
 ### Instalación 🔧
@@ -43,13 +43,21 @@ Ejecuta `npm install` para instalar las dependencias.
 
 ### Ejecución ⚙️
 
-Ejecuta `npm run dev` para un servidor de dev. Navega a `http://localhost:3000/`. La aplicación se recargará automáticamente cuando hagas algun cambio en el código.
+Ejecuta `npm start` para un servidor de dev. Navega a `http://localhost:3000/`. La aplicación se recargará automáticamente cuando hagas algun cambio en el código.
+
+### Construcción 🔨
+
+Ejecuta `npm run build` para crear una build de producción optimizada.
+
+### Despliegue 🚀
+
+Para desplegar a GitHub Pages, ejecuta `npm run deploy` después de hacer build.
 
 ## Construido con 🛠️
 
-- [React](https://es.reactjs.org/) - Una biblioteca de JavaScript para construir interfaces de usuario.
-- [VexFlow](http://www.vexflow.com/) - VexFlow es una API de representación de notación musical Open-Source. Está escrito completamente en JavaScript y se ejecuta directamente en el navegador.
-- [ToneJS](https://tonejs.github.io/) - ToneJS API para la manipulación de la Web Audio API
+- [React](https://es.reactjs.org/) (v18.3.1) - Una biblioteca de JavaScript para construir interfaces de usuario.
+- [VexFlow](http://www.vexflow.com/) (v5.0.0) - VexFlow es una API de representación de notación musical Open-Source. Está escrito completamente en JavaScript y se ejecuta directamente en el navegador.
+- [ToneJS](https://tonejs.github.io/) (v15.1.22) - ToneJS API para la manipulación de la Web Audio API
 
 ## Autores ✒️
 

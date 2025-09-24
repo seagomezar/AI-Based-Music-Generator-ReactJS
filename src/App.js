@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Tone from 'tone';
+import * as Tone from 'tone';
 import Panel from './Panel/Panel';
 import Song from './Song/Song';
 import Visualizator from './Visualizator/Visualizator';

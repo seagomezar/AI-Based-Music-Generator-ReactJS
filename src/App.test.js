@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import Tone from '../mocks/tone';
-import Panel from './Panel/Panel';
-import Song from './Song/Song';
-import Visualizator from './Visualizator/Visualizator';
-import { generateSong } from './Generators/MusicGenerator';
-import { CURRENT_SOUNDS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay, changeScale } from './Constants';
+import { createRoot } from 'react-dom/client';
 import './App.css';
-import moment from 'moment';
 import App from './App';
+
+// Mock tone.js and vexflow to prevent test issues
+jest.mock('tone');
+jest.mock('vexflow');
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  const root = createRoot(div);
+  root.render(<App />);
 });

@@ -2,20 +2,23 @@
   "name": "tone-test",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://seagomezar.github.io/AI-Based-Music-Generator-ReactJS",
   "dependencies": {
-    "jquery": "3.5.0",
-    "moment": "2.24.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-scripts": "3.4.1",
-    "tone": "13.8.25",
-    "vexflow": "3.0.9"
+    "jquery": "3.7.1",
+    "moment": "2.30.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "tone": "15.1.22",
+    "vexflow": "5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -28,5 +31,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
