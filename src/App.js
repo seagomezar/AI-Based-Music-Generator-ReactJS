@@ -27,8 +27,8 @@ class App extends Component {
 		// Set the piano instrument
 		this.piano = new Tone.Sampler(SALAMANDER_PIANO_SOUNDS, {
 			'release': 1,
-			'baseUrl': './salamander/'
-		}).toMaster();
+			'baseUrl': process.env.PUBLIC_URL + '/salamander/'
+		}).toDestination();
 
 		this.handlePlaySong = this.handlePlaySong.bind(this);
 		this.bringToTop = this.bringToTop.bind(this);
@@ -46,18 +46,19 @@ class App extends Component {
 
 	componentDidMount() {
 		this.handleGenerate();
-		setTimeout(() => {
+		Tone.loaded().then(() => {
 			this.handlePlaySong();
-		}, 3000);
+		});
 
 	}
 
 	handleGenerate() {
 		const song = generateSong(this.state.duration);
-		this.setState({ song ,
-						generated: true,
-						creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss') 
-					});
+		this.setState({
+			song,
+			generated: true,
+			creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss')
+		});
 	}
 
 	translateForTone(song) {
@@ -80,28 +81,28 @@ class App extends Component {
 	transformElement(element, kind, note) {
 		if (kind === 'circles') {
 			this.bringToTop(element);
-					const color = element.getAttribute('data-color');
-					const originalRadius = Number(element.getAttribute('r'));
-					element.style.fill = color;
-					element.style.opacity = 1;
-					element.style.r = originalRadius + 5;
-					element.style.transition = 'all 0.5s';
-					setTimeout(() => {
-						element.style.fill = "white";
-						element.style.opacity = 0.3;
-						element.style.r = originalRadius;
-						element.style.transition = 'all 0.5s';
-					}, 500);
+			const color = element.getAttribute('data-color');
+			const originalRadius = Number(element.getAttribute('r'));
+			element.style.fill = color;
+			element.style.opacity = 1;
+			element.style.r = originalRadius + 5;
+			element.style.transition = 'all 0.5s';
+			setTimeout(() => {
+				element.style.fill = "white";
+				element.style.opacity = 0.3;
+				element.style.r = originalRadius;
+				element.style.transition = 'all 0.5s';
+			}, 500);
 		} else {
 			if (~note.indexOf("#")) {
 				element.classList.add('black-pressed');
-			 } else {
+			} else {
 				element.classList.add('white-pressed');
-			 }
-			 setTimeout(()=>{
+			}
+			setTimeout(() => {
 				element.classList.remove("black-pressed");
 				element.classList.remove("white-pressed");
-			 }, 500);
+			}, 500);
 		}
 	}
 
@@ -116,7 +117,7 @@ class App extends Component {
 
 				if (element) {
 					this.transformElement(element, this.state.visualizatorType, note);
-					
+
 				} else {
 					console.log("CIRCLE_NOT_FOUND", note);
 				}
@@ -145,7 +146,7 @@ class App extends Component {
 			duration,
 			speed,
 			song: []
-		}, ()=>{
+		}, () => {
 			this.handleGenerate();
 			setTimeout(() => {
 				this.handlePlaySong();
@@ -153,7 +154,7 @@ class App extends Component {
 		});
 	}
 
-	handleChangeVisualization(type){
+	handleChangeVisualization(type) {
 		this.setState({
 			visualizatorType: type
 		});
@@ -162,7 +163,7 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization}/>
+				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization} />
 				<Visualizator type={this.state.visualizatorType} />
 				{
 					(this.state.song.length) ?

@@ -5,7 +5,7 @@ import {
   getNotationForPaint,
   CURRENT_SCALE,
 } from "../Constants";
-import Vex from "vexflow";
+import { Renderer, Stave, StaveNote, Accidental, Formatter, Beam, Barline } from "vexflow";
 import "./Song.css";
 
 class Song extends Component {
@@ -19,7 +19,6 @@ class Song extends Component {
   }
 
   paintSong(song, tempo) {
-    const VF = Vex.Flow;
     let bars = song.length;
     let currentBar = [];
     var div = document.getElementById("tab");
@@ -28,11 +27,11 @@ class Song extends Component {
     div = document.createElement("div");
     div.setAttribute("id", "boo");
     parent.appendChild(div);
-    var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+    var renderer = new Renderer(div, Renderer.Backends.SVG);
     const measuresPerLine = Math.floor(WIDTH / 250);
     renderer.resize(WIDTH, Math.ceil(bars / measuresPerLine) * 150);
     var context = renderer.getContext();
-    var stave = new VF.Stave(10, 40, 250);
+    var stave = new Stave(10, 40, 250);
     stave
       .addClef("treble")
       .addTimeSignature("4/4")
@@ -50,38 +49,38 @@ class Song extends Component {
           scale = sound[2];
         }
         let duration = getNotationForPaint(note.duration);
-        let item = new VF.StaveNote({
+        let item = new StaveNote({
           keys: [sound[0].replace("#", "") + "/" + scale],
           duration: duration,
         });
         if (note.accidental) {
-          item.addAccidental(0, new VF.Accidental("#"));
+          item.addModifier(new Accidental("#"), 0);
         }
         currentBar.push(item);
       }
       let beams;
       if (i === song.length - 1) {
-        stave.setEndBarType(VF.Barline.type.END);
+        stave.setEndBarType(Barline.type.END);
         stave.setContext(context).draw();
-        beams = VF.Beam.generateBeams(currentBar);
-        VF.Formatter.FormatAndDraw(context, stave, currentBar);
+        beams = Beam.generateBeams(currentBar);
+        Formatter.FormatAndDraw(context, stave, currentBar);
         beams.forEach(function (b) {
           b.setContext(context).draw();
         });
       } else {
         stave.setContext(context).draw();
-        beams = VF.Beam.generateBeams(currentBar);
-        VF.Formatter.FormatAndDraw(context, stave, currentBar);
+        beams = Beam.generateBeams(currentBar);
+        Formatter.FormatAndDraw(context, stave, currentBar);
         beams.forEach(function (b) {
           b.setContext(context).draw();
         });
         if ((i + 1) % 5 === 0) {
           y = stave.y + 120;
           x = 10;
-          stave = new VF.Stave(x, y, 220);
+          stave = new Stave(x, y, 220);
           stave.addClef("treble");
         } else {
-          stave = new VF.Stave(x, y, 220);
+          stave = new Stave(x, y, 220);
         }
       }
       currentBar = [];
@@ -89,7 +88,7 @@ class Song extends Component {
     this.setState({ isSong: true });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     setTimeout(() => {
       this.paintSong(this.props.song, this.props.tempo);
     }, 1000);
