@@ -27,7 +27,7 @@ class App extends Component {
 		// Set the piano instrument
 		this.piano = new Tone.Sampler(SALAMANDER_PIANO_SOUNDS, {
 			'release': 1,
-			'baseUrl': process.env.PUBLIC_URL + '/salamander/'
+			'baseUrl': import.meta.env.BASE_URL + '/salamander/'
 		}).toDestination();
 
 		this.handlePlaySong = this.handlePlaySong.bind(this);
@@ -46,10 +46,7 @@ class App extends Component {
 
 	componentDidMount() {
 		this.handleGenerate();
-		Tone.loaded().then(() => {
-			this.handlePlaySong();
-		});
-
+		// Auto-play removed
 	}
 
 	handleGenerate() {
@@ -70,7 +67,15 @@ class App extends Component {
 				const note = notes[j];
 				let sound = CURRENT_SOUNDS[note.sound];
 				let duration = getNotationForPlay(note.duration);
-				newSong.push([i + ":" + currentTempo, sound, duration]);
+				// Push an object with named properties instead of an array
+				// The 'time' property is implicitly used by Tone.Part if we pass an array of events, 
+				// but Tone.Part expects [time, value]. We will pass [time, valueObject].
+				newSong.push({
+					time: i + ":" + currentTempo,
+					note: sound,
+					duration: duration,
+					vfId: `vf-${i}-${j}`
+				});
 				currentTempo += note.duration;
 			}
 
@@ -110,17 +115,30 @@ class App extends Component {
 		const song = this.translateForTone(this.state.song);
 		Tone.Transport.cancel();
 		Tone.Transport.clear();
-		new Tone.Part((time, note, duration) => {
-			this.piano.triggerAttackRelease(note, duration, time);
+		new Tone.Part((time, event) => {
+			// event is the object we pushed: { note, duration, vfId }
+			this.piano.triggerAttackRelease(event.note, event.duration, time);
 			Tone.Draw.schedule(() => {
-				const element = document.getElementById(note);
-
+				// 1. Visualizator Circle Highlight
+				const element = document.getElementById(event.note);
 				if (element) {
-					this.transformElement(element, this.state.visualizatorType, note);
-
+					this.transformElement(element, this.state.visualizatorType, event.note);
 				} else {
-					console.log("CIRCLE_NOT_FOUND", note);
+					console.log("CIRCLE_NOT_FOUND", event.note);
 				}
+
+				// 2. Sheet Music Note Highlight
+				const noteElement = document.getElementById(event.vfId);
+				if (noteElement) {
+					noteElement.classList.add('note-highlight');
+					// Remove highlight after duration (converted to ms approx)
+					// Tone.Time(event.duration).toSeconds() gives seconds.
+					const durationMs = Tone.Time(event.duration).toSeconds() * 1000;
+					setTimeout(() => {
+						noteElement.classList.remove('note-highlight');
+					}, durationMs);
+				}
+
 			}, time);
 		}, song).start();
 		Tone.Transport.bpm.rampTo(this.state.speed);
@@ -148,9 +166,8 @@ class App extends Component {
 			song: []
 		}, () => {
 			this.handleGenerate();
-			setTimeout(() => {
-				this.handlePlaySong();
-			}, 5000);
+			this.handleGenerate();
+			// Auto-play removed (user must click Play)
 		});
 	}
 
@@ -163,11 +180,18 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization} />
 				<Visualizator type={this.state.visualizatorType} />
+				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization} />
+
+				<div style={{ textAlign: 'center', marginTop: '10px' }}>
+					<button onClick={this.handlePlaySong}>Play Melody</button>
+				</div>
 				{
 					(this.state.song.length) ?
-						<Song song={this.state.song} creationDate={this.state.creationDate} tempo={this.state.speed} /> :
+						<Song song={this.state.song}
+							creationDate={this.state.creationDate}
+							tempo={this.state.speed}
+							handlePlaySong={this.handlePlaySong} /> :
 						<p>Loading ...</p>
 				}
 

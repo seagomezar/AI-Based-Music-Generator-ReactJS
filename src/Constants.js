@@ -107,8 +107,7 @@ export const MAX_RADIUS = 40;
 export const MIN_RADIUS = 10;
 export const MAX_SPEED = 220;
 export const MIN_SPEED = 40;
-export const HEIGHT = window.innerHeight - 5;
-export const WIDTH = window.innerWidth - 15;
+
 
 export function getNotationForPaint(duration) {
     switch (duration) {

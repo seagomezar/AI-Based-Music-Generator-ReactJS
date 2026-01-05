@@ -1,53 +1,44 @@
 .panel {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative; /* Changed from fixed */
     text-align: center;
     width: 100%;
     z-index: 2;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .panel > section {
-    width: 90%;
-    height: 300px;
+    width: 80%; /* Slightly wider */
+    /* Height removed to fit content, or keep max-height if preferred. Let's make it fit content. */
     background: #DDDDDD;
     margin: 0 auto;
     text-align: left;
     padding: 1em 1em;
-    overflow: scroll;
+    border-radius: 8px;
+    /* overflow: scroll; Removed to show full content */
   }
   .panel > nav {
-    height: 50px;
-    margin-top: 10px;
-  }
-  .panel > nav > button {
-    padding: 1em 1em;
-    border-radius: 5px;
+     display: none; /* Hide nav container entirely as we removed the button */
   }
 
   .form {
     padding: 1% 1% 1% 1%;
     border: 1px solid black;
-    width: 25%;
+    width: 100%; /* Use full width of container, or reasonable max */
+    max-width: 600px;
+    background: white;
+    margin-bottom: 20px;
   }
   .form > div {
     margin-bottom: 3%;
   }
   .form > div > label {
-    
-    width: 50%;
+    width: 40%;
     display: inline-block;
+    font-weight: bold;
   }
   .form > .button{
     text-align: center;
-    margin-top: 10%;
+    margin-top: 10px;
   }
   
-  .hideBar {
-    transform:  translate(-50%, -330px);
-    transition: transform 0.5s linear;
-  }
-  
-  .showBar {
-    transition: transform 0.5s linear;
-  }
+  /* Removed hideBar/showBar classes as they are no longer used */

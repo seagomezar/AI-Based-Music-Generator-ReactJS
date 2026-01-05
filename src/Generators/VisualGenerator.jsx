@@ -1,8 +1,8 @@
 import React from 'react';
-import {MIN_RADIUS, WIDTH, HEIGHT, MAX_RADIUS} from '../Constants';
+import { MIN_RADIUS, MAX_RADIUS } from '../Constants';
 
 function getRandomX() {
-    const MAX = WIDTH - MIN_RADIUS;
+    const MAX = (window.innerWidth - 15) - MIN_RADIUS;
     let x = Math.floor(MAX - Math.random() * MAX);
     if (x < MIN_RADIUS) {
         x += MIN_RADIUS;
@@ -11,7 +11,7 @@ function getRandomX() {
 }
 
 function getRandomY() {
-    const MAX = HEIGHT - MIN_RADIUS;
+    const MAX = (window.innerHeight - 5) - MIN_RADIUS;
     let y = Math.floor(MAX - Math.random() * MAX);
     if (y < MIN_RADIUS) {
         y += MIN_RADIUS;
