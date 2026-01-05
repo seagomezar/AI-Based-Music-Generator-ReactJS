@@ -180,7 +180,6 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Visualizator type={this.state.visualizatorType} />
 				<Panel tempo={this.state.speed} duration={this.state.duration} handleRun={this.handleRun} handleChangeVisualization={this.handleChangeVisualization} />
 
 				<div style={{ textAlign: 'center', marginTop: '10px' }}>
@@ -194,7 +193,7 @@ class App extends Component {
 							handlePlaySong={this.handlePlaySong} /> :
 						<p>Loading ...</p>
 				}
-
+				<Visualizator type={this.state.visualizatorType} />
 			</div>
 		);
 	}
