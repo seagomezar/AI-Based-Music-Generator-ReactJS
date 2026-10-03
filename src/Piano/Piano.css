@@ -1,33 +1,154 @@
+/* Studio Piano Keyboard Deck Styles */
 
-.piano {
-    margin-top: 100px;
-    z-index: 1;
+.piano-stage-wrapper {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
-ul {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 0;
-    position: relative;
-    text-align: center;
-  }
-  li {
-    display: inline-block;
-    border: 1px solid black;
-    height: 80px;
-  }
-  .white {
-    background: white;
-  }
-  .black {
-    background: black;
-    position: absolute;
-    margin: 0px 0 0px -10px;
-    border-left: 2px solid white;
-    border-bot: 2px solid white;
-  }
-  .white-pressed{
-    background: #AAA;
-  }
-  .black-pressed {
-    background: #222;
-  }
+
+.piano-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface-container-high);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid var(--outline-variant);
+  border-bottom: none;
+}
+
+.piano-header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.piano-header-title .title-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.piano-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--on-surface-variant);
+}
+
+.piano-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary-glow);
+}
+
+.piano-chassis {
+  background: #0b0e14;
+  border: 1px solid var(--outline-variant);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  padding: 0.5rem 0.75rem 0.75rem 0.75rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Red felt / carbon lip */
+.piano-fallboard-trim {
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(90deg, #450a0a 0%, #1e293b 50%, #450a0a 100%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 2px 2px 0 0;
+  margin-bottom: 2px;
+}
+
+.piano-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.piano-keys-list {
+  display: flex;
+  align-items: flex-start;
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  width: max-content;
+  min-width: 100%;
+}
+
+.white {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 65%, #e2e8f0 100%);
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 6px;
+  box-sizing: border-box;
+  user-select: none;
+  transition: background 0.1s ease, box-shadow 0.1s ease, transform 0.05s ease;
+}
+
+.black {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, #1e293b 0%, #0f172a 70%, #020617 100%);
+  border: 1px solid #334155;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  box-sizing: border-box;
+  user-select: none;
+  transition: background 0.1s ease, box-shadow 0.1s ease, transform 0.05s ease;
+}
+
+.key-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #64748b;
+  pointer-events: none;
+}
+
+/* Lit / Pressed Key Effects */
+.white-pressed {
+  background: linear-gradient(to bottom, #cffafe 0%, #67e8f9 50%, #06b6d4 100%) !important;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.95), inset 0 0 6px #ffffff !important;
+  border-color: #22d3ee !important;
+  transform: translateY(2px);
+}
+
+.white-pressed .key-label {
+  color: #083344;
+}
+
+.black-pressed {
+  background: linear-gradient(to bottom, #7e22ce 0%, #a855f7 60%, #c084fc 100%) !important;
+  box-shadow: 0 0 22px rgba(168, 85, 247, 0.95), inset 0 0 6px #ffffff !important;
+  border-color: #d8b4fe !important;
+  transform: translateY(2px);
+}
+
+.piano-under-bezel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--outline);
+  margin-top: 0.5rem;
+  padding: 0 4px;
+}

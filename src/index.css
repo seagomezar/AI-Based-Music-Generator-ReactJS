@@ -1,5 +1,117 @@
+:root {
+  --surface: #0f131d;
+  --surface-dim: #0a0e18;
+  --surface-container-lowest: #0a0e18;
+  --surface-container-low: #171b26;
+  --surface-container: #1c1f2a;
+  --surface-container-high: #262a35;
+  --surface-container-highest: #313540;
+  --surface-bright: #353944;
+
+  --primary: #4cd7f6;
+  --primary-container: #06b6d4;
+  --primary-glow: rgba(76, 215, 246, 0.35);
+  --on-primary: #003640;
+
+  --secondary: #ddb7ff;
+  --secondary-container: #6f00be;
+  --secondary-purple: #a855f7;
+  --on-secondary: #490080;
+
+  --tertiary: #ffb95f;
+  --tertiary-container: #e79400;
+  --on-tertiary: #472a00;
+
+  --error: #f43f5e;
+  --error-glow: rgba(244, 63, 94, 0.4);
+
+  --on-surface: #dfe2f1;
+  --on-surface-variant: #bcc9cd;
+  --outline: #869397;
+  --outline-variant: #3d494c;
+
+  --font-body: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: var(--font-body);
+  background-color: var(--surface);
+  background-image: radial-gradient(rgba(76, 215, 246, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--on-surface);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-container-lowest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-container-highest);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
+}
+
+/* Keyframes */
+@keyframes pulse-beam {
+  0%, 100% { opacity: 0.9; filter: drop-shadow(0 0 6px var(--error-glow)); }
+  50% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--error-glow)); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
 }

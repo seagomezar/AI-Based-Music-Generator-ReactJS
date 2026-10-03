@@ -1,46 +1,49 @@
 import React from 'react';
 import { MIN_RADIUS, MAX_RADIUS } from '../Constants';
 
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 320;
+
 function getRandomX() {
-    const MAX = (window.innerWidth - 15) - MIN_RADIUS;
-    let x = Math.floor(MAX - Math.random() * MAX);
-    if (x < MIN_RADIUS) {
-        x += MIN_RADIUS;
-    }
-    return x;
+  const min = MIN_RADIUS + 20;
+  const max = CANVAS_WIDTH - MIN_RADIUS - 20;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomY() {
-    const MAX = (window.innerHeight - 5) - MIN_RADIUS;
-    let y = Math.floor(MAX - Math.random() * MAX);
-    if (y < MIN_RADIUS) {
-        y += MIN_RADIUS;
-    }
-    return y;
+  const min = MIN_RADIUS + 20;
+  const max = CANVAS_HEIGHT - MIN_RADIUS - 20;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  const palette = [
+    '#4cd7f6', // electric cyan
+    '#ddb7ff', // neon purple
+    '#ffb95f', // warm amber
+    '#f43f5e', // coral red
+    '#38bdf8', // sky blue
+    '#a855f7', // violet
+    '#34d399', // emerald
+  ];
+  return palette[Math.floor(Math.random() * palette.length)];
 }
 
 function getRandomRadius() {
-    let radius = Math.floor(MAX_RADIUS - Math.random() * MAX_RADIUS) + MIN_RADIUS;
-    return radius;
+  return Math.floor(Math.random() * (MAX_RADIUS - MIN_RADIUS)) + MIN_RADIUS;
 }
 
 export function generateCircle(note) {
-    const circle = <circle
-        key={note}
-        id={note}
-        cx={getRandomX()}
-        cy={getRandomY()}
-        r={getRandomRadius()}
-        data-color={getRandomColor()}>
-    </circle>;
-    return circle;
+  const r = getRandomRadius();
+  const color = getRandomColor();
+  return (
+    <circle
+      key={note}
+      id={note}
+      cx={getRandomX()}
+      cy={getRandomY()}
+      r={r}
+      data-color={color}
+    />
+  );
 }

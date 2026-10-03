@@ -1,10 +1,167 @@
-.svg {
-    margin-top: 10px;
-    background-color: #555555;
-    display: block;
-  }
+/* Dual-Mode Visualizer Stage & Cosmic Orbit Canvas */
 
-  circle {
-    fill: white;
-    opacity: 0.3;
-  }
+.visualizer-stage-card {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto 1.5rem auto;
+  box-sizing: border-box;
+}
+
+.visualizer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface-container-high);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid var(--outline-variant);
+  border-bottom: none;
+}
+
+.visualizer-header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.visualizer-header-title .title-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.visualizer-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.telemetry-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(61, 73, 76, 0.7);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+}
+
+.telemetry-pill.active {
+  border-color: rgba(244, 63, 94, 0.6);
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--error);
+  font-weight: bold;
+}
+
+/* Cosmic Canvas Frame */
+.cosmic-canvas-frame {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  background: #080d17;
+  border: 1px solid var(--outline-variant);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Orbital Rings */
+.orbital-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ring-outer {
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(76, 215, 246, 0.15);
+  animation: orbit-spin 26s linear infinite;
+}
+
+.ring-mid {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed rgba(221, 183, 255, 0.25);
+  animation: orbit-reverse 20s linear infinite;
+}
+
+.ring-inner {
+  width: 130px;
+  height: 130px;
+  border: 1px solid rgba(76, 215, 246, 0.35);
+  animation: orbit-spin 14s linear infinite;
+}
+
+/* Center Singularity */
+.cosmic-center-core {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.core-icon-orb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6f00be, #a855f7, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.7);
+}
+
+.core-label {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  text-shadow: 0 0 8px var(--primary-glow);
+}
+
+/* Floating Lissajous Wave */
+.cosmic-lissajous-wave {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Reactive SVG circles layer */
+.cosmic-circles-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cosmic-circles-svg circle {
+  fill: #ffffff;
+  opacity: 0.35;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.cosmic-circles-svg circle:hover {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.visualizer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--outline);
+  margin-top: 0.5rem;
+  padding: 0 4px;
+}
