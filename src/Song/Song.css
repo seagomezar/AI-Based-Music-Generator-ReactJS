@@ -1,217 +1,131 @@
-/* Sheet Music Stage Card & Pristine Score Canvas */
+/* Classical Music Sheet - Editorial Score Styles */
 
-.song-stage-card {
+.classical-sheet-card {
   width: 100%;
-  max-width: 1240px;
-  margin: 0 auto 1.5rem auto;
-  padding: 1.25rem;
-  background: var(--surface-container-low);
-  border: 1px solid var(--outline-variant);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
 }
 
-/* Score Chassis Header */
-.score-header {
+.sheet-card-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 0.75rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(61, 73, 76, 0.6);
-  gap: 0.75rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  gap: 1rem;
 }
 
-.score-header-title {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.score-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--secondary);
-  box-shadow: 0 0 8px rgba(221, 183, 255, 0.7);
-}
-
-.score-title {
+.sheet-piece-title {
   margin: 0;
-  font-size: 1.15rem;
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
   font-weight: 600;
-  color: var(--on-surface);
-  letter-spacing: -0.015em;
+  color: var(--text-main);
 }
 
-.score-subtitle {
+.sheet-piece-meta {
   margin: 0.2rem 0 0 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--on-surface-variant);
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-.score-header-badges {
+.sheet-badges {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-.score-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--surface-container-lowest);
-  border: 1px solid rgba(61, 73, 76, 0.7);
-  padding: 4px 10px;
+.badge-ready {
+  background: var(--surface-cream);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
   border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
-.active-note-badge {
-  border-color: rgba(244, 63, 94, 0.5);
-  background: rgba(244, 63, 94, 0.1);
+.badge-playing {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: var(--active-note);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
 }
 
-.live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--error);
-  animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.badge-dim {
-  color: var(--outline);
-}
-
-.badge-val {
-  color: var(--on-surface);
-  font-weight: 600;
-}
-
-.badge-primary {
-  color: var(--primary);
-  font-weight: 700;
-}
-
-.badge-highlight {
-  color: var(--error);
-  font-weight: 700;
-}
-
-/* The Pristine Score Paper Canvas */
-.score-paper-canvas {
-  position: relative;
-  background: #f8fafc;
-  color: #0f172a;
-  border-radius: var(--radius-md);
-  border: 2px solid #cbd5e1;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.2);
-  padding: 1.25rem 1rem;
+/* Paper Sheet */
+.sheet-paper {
+  background: #fdfbf7;
+  border: 1px solid #dcd3c3;
+  border-radius: var(--radius-sm);
+  padding: 1.5rem 1.25rem;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.03);
   overflow-x: auto;
 }
 
-/* Screw Accents */
-.paper-screw {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #94a3b8;
-  opacity: 0.6;
-}
-
-.paper-screw.top-left { top: 6px; left: 6px; }
-.paper-screw.top-right { top: 6px; right: 6px; }
-.paper-screw.bottom-left { bottom: 6px; left: 6px; }
-.paper-screw.bottom-right { bottom: 6px; right: 6px; }
-
-/* Banners */
-.paper-top-banner {
+.paper-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: #475569;
-  padding: 0 4px 0.5rem 4px;
-  border-bottom: 1px dashed #e2e8f0;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eae2d4;
   margin-bottom: 0.5rem;
 }
 
-.banner-tempo {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.paper-tempo-text {
+  font-weight: 600;
 }
 
-.banner-source {
+.paper-instrument-text {
   font-style: italic;
+  color: var(--text-muted);
 }
 
-.score-svg-viewport {
+.sheet-svg-container {
   width: 100%;
   overflow-x: auto;
   text-align: center;
   min-height: 140px;
 }
 
-.score-svg-viewport svg {
+.sheet-svg-container svg {
   display: block;
   margin: 0 auto;
 }
 
-.paper-bottom-banner {
-  margin-top: 0.75rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e2e8f0;
+.paper-footer-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: #64748b;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid #eae2d4;
   gap: 0.5rem;
 }
 
-.banner-meta-items {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.banner-engine-status {
-  color: #0284c7;
-  font-weight: 600;
-}
-
-/* Active Note Highlighting */
+/* Note highlight during playback */
 .note-highlight path,
 .note-highlight rect,
 .note-highlight ellipse {
-  fill: #f43f5e !important;
-  stroke: #f43f5e !important;
-  filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.85));
+  fill: #b91c1c !important;
+  stroke: #b91c1c !important;
   transition: all 0.1s ease;
 }
 
 .note-highlight text {
-  fill: #f43f5e !important;
+  fill: #b91c1c !important;
   font-weight: bold;
-}
-
-@media (max-width: 640px) {
-  .paper-top-banner,
-  .paper-bottom-banner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
 }

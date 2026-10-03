@@ -2,6 +2,27 @@ import React, { Component } from 'react';
 import './Panel.css';
 import { MAJOR_SCALES } from '../Constants';
 
+// Classical tempo descriptors
+function getClassicalTempoMarking(bpm) {
+  if (bpm < 60) return 'Largo';
+  if (bpm < 76) return 'Adagio';
+  if (bpm < 108) return 'Andante';
+  if (bpm < 132) return 'Moderato';
+  if (bpm < 168) return 'Allegro';
+  return 'Presto';
+}
+
+const SCALE_NAMES_ES = {
+  'C': 'Do Mayor (C)',
+  'D': 'Re Mayor (D)',
+  'E': 'Mi Mayor (E)',
+  'F': 'Fa Mayor (F)',
+  'G': 'Sol Mayor (G)',
+  'A': 'La Mayor (A)',
+  'B': 'Si Mayor (B)',
+  'F#': 'Fa# Mayor (F#)',
+};
+
 class Panel extends Component {
   constructor(props) {
     super(props);
@@ -10,7 +31,7 @@ class Panel extends Component {
       speed: props.tempo || 100,
       scale: 'C',
       visualizationType: props.visualizatorType || 'piano',
-      showArchitecture: true,
+      showTheory: false,
     };
 
     this.handleSpeedChange = this.handleSpeedChange.bind(this);
@@ -19,7 +40,7 @@ class Panel extends Component {
     this.handleScaleChange = this.handleScaleChange.bind(this);
     this.handleVizChange = this.handleVizChange.bind(this);
     this.handleTriggerGenerate = this.handleTriggerGenerate.bind(this);
-    this.toggleArchitecture = this.toggleArchitecture.bind(this);
+    this.toggleTheory = this.toggleTheory.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -66,83 +87,85 @@ class Panel extends Component {
     this.props.handleRun(this.state.speed, this.state.duration, this.state.scale);
   }
 
-  toggleArchitecture() {
-    this.setState((prev) => ({ showArchitecture: !prev.showArchitecture }));
+  toggleTheory() {
+    this.setState((prev) => ({ showTheory: !prev.showTheory }));
   }
 
   render() {
     const { isPlaying, handlePlaySong, handleStopSong } = this.props;
-    const { speed, duration, scale, visualizationType, showArchitecture } = this.state;
+    const { speed, duration, scale, visualizationType, showTheory } = this.state;
+    const tempoMarking = getClassicalTempoMarking(speed);
 
     return (
-      <aside className="panel-workstation" id="panel">
-        {/* Rack Master Parameter Console */}
-        <div className="rack-console">
-          {/* Header Row */}
-          <div className="rack-console-header">
-            <div className="rack-console-title-group">
-              <span className="material-symbols-outlined rack-icon">tune</span>
-              <h2 className="rack-console-title">Master Parameter Console</h2>
-              <span className="rack-id-badge">RACK ID: 0x48A-TONE</span>
+      <section className="classical-panel-section" id="panel">
+        <div className="classical-panel-card">
+          {/* Card Header */}
+          <div className="panel-card-header">
+            <div className="header-title-box">
+              <span className="material-symbols-outlined icon-classical">tune</span>
+              <h2 className="panel-title">Ajustes de Composición Musical</h2>
             </div>
-
-            <div className="rack-header-actions">
-              {/* Visualizer Mode Toggle */}
-              <div className="mode-toggle-group">
+            
+            {/* Visualizer Mode Switcher */}
+            <div className="classical-view-selector">
+              <span className="view-label">Vista:</span>
+              <div className="view-tabs">
                 <button
                   type="button"
-                  className={`mode-btn ${visualizationType === 'piano' ? 'active' : ''}`}
+                  className={`view-tab-btn ${visualizationType === 'piano' ? 'selected' : ''}`}
                   onClick={() => this.handleVizChange('piano')}
                 >
                   <span className="material-symbols-outlined">piano</span>
-                  <span>Piano Deck</span>
+                  <span>Piano de Cola</span>
                 </button>
                 <button
                   type="button"
-                  className={`mode-btn ${visualizationType === 'circles' ? 'active' : ''}`}
+                  className={`view-tab-btn ${visualizationType === 'circles' ? 'selected' : ''}`}
                   onClick={() => this.handleVizChange('circles')}
                 >
-                  <span className="material-symbols-outlined">blur_circular</span>
-                  <span>Cosmic Circles</span>
+                  <span className="material-symbols-outlined">grain</span>
+                  <span>Círculos Armónicos</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Controls Strip */}
-          <div className="rack-controls-grid">
+          {/* Controls Grid */}
+          <div className="classical-controls-row">
             {/* Control 1: Tempo / BPM */}
-            <div className="rack-control-bay">
-              <div className="bay-header">
-                <span className="bay-label">Tempo / Speed</span>
-                <div className="bay-telemetry">
-                  <span className="telemetry-value-lg text-primary">{speed}</span>
-                  <span className="telemetry-unit">BPM</span>
-                </div>
+            <div className="classical-control-item">
+              <label htmlFor="speed-slider" className="control-label">
+                Tempo (Velocidad)
+              </label>
+              <div className="tempo-display">
+                <span className="tempo-number">{speed}</span>
+                <span className="tempo-units">BPM</span>
+                <span className="tempo-italian">({tempoMarking})</span>
               </div>
-              <div className="bay-slider-group">
+              <div className="slider-container">
                 <button
                   type="button"
-                  className="nudge-btn"
+                  className="step-btn"
                   onClick={() => this.handleSpeedNudge(-5)}
-                  title="Decrease 5 BPM"
+                  title="Disminuir 5 BPM"
                 >
                   -
                 </button>
                 <input
+                  id="speed-slider"
                   type="range"
                   min="40"
                   max="220"
                   value={speed}
                   onChange={this.handleSpeedChange}
-                  className="rack-range-slider"
+                  className="classical-slider"
                   name="speed"
                 />
                 <button
                   type="button"
-                  className="nudge-btn"
+                  className="step-btn"
                   onClick={() => this.handleSpeedNudge(5)}
-                  title="Increase 5 BPM"
+                  title="Aumentar 5 BPM"
                 >
                   +
                 </button>
@@ -150,181 +173,128 @@ class Panel extends Component {
             </div>
 
             {/* Control 2: Measures */}
-            <div className="rack-control-bay">
-              <div className="bay-header">
-                <span className="bay-label">Measures (# Bars)</span>
-                <span className="telemetry-unit">Length</span>
+            <div className="classical-control-item">
+              <label className="control-label">Compases</label>
+              <div className="measures-display">
+                <span className="measures-number">{duration}</span>
+                <span className="measures-tag">compases</span>
               </div>
-              <div className="bay-stepper-group">
-                <span className="telemetry-value-lg text-secondary">{duration}</span>
-                <div className="stepper-buttons">
-                  <button
-                    type="button"
-                    className="nudge-btn"
-                    onClick={() => this.handleDurationNudge(-1)}
-                    title="Remove measure"
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>remove</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="nudge-btn"
-                    onClick={() => this.handleDurationNudge(1)}
-                    title="Add measure"
-                  >
-                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>add</span>
-                  </button>
-                </div>
+              <div className="measures-stepper">
+                <button
+                  type="button"
+                  className="measures-btn"
+                  onClick={() => this.handleDurationNudge(-1)}
+                  title="Menos compases"
+                >
+                  <span className="material-symbols-outlined">remove</span>
+                </button>
+                <button
+                  type="button"
+                  className="measures-btn"
+                  onClick={() => this.handleDurationNudge(1)}
+                  title="Más compases"
+                >
+                  <span className="material-symbols-outlined">add</span>
+                </button>
               </div>
             </div>
 
             {/* Control 3: Scale */}
-            <div className="rack-control-bay">
-              <div className="bay-header">
-                <span className="bay-label">Diatonic Scale</span>
-                <span className="telemetry-unit">Root Mode</span>
-              </div>
-              <div className="bay-select-wrapper">
+            <div className="classical-control-item">
+              <label htmlFor="scale-select" className="control-label">
+                Tonalidad Clásica
+              </label>
+              <div className="select-wrapper">
                 <select
+                  id="scale-select"
                   name="scale"
                   value={scale}
                   onChange={this.handleScaleChange}
-                  className="rack-select"
+                  className="classical-select"
                 >
                   {Object.keys(MAJOR_SCALES).map((s) => (
                     <option value={s} key={s}>
-                      {s} Major ({MAJOR_SCALES[s].length} notes)
+                      {SCALE_NAMES_ES[s] || `${s} Mayor`}
                     </option>
                   ))}
                 </select>
-                <span className="material-symbols-outlined select-arrow">expand_more</span>
+                <span className="material-symbols-outlined arrow-icon">unfold_more</span>
               </div>
             </div>
 
-            {/* Control 4: Transport & Generation Actions */}
-            <div className="rack-actions-bay">
-              {/* Play / Stop Button */}
+            {/* Control 4: Action Buttons */}
+            <div className="classical-action-box">
               <button
                 type="button"
-                className={`transport-btn ${isPlaying ? 'playing' : 'stopped'}`}
+                className={`btn-panel-action btn-play ${isPlaying ? 'playing' : ''}`}
                 onClick={isPlaying ? handleStopSong : handlePlaySong}
               >
-                <span className={`status-indicator-dot ${isPlaying ? 'pulse' : ''}`} />
                 <span className="material-symbols-outlined">
                   {isPlaying ? 'stop' : 'play_arrow'}
                 </span>
-                <span>{isPlaying ? 'STOP MELODY' : 'PLAY MELODY'}</span>
+                <span>{isPlaying ? 'Detener' : 'Interpretar'}</span>
               </button>
 
-              {/* Generate Button */}
               <button
                 type="button"
-                className="generate-ai-btn"
+                className="btn-panel-action btn-compose"
                 onClick={this.handleTriggerGenerate}
               >
-                <span className="material-symbols-outlined">auto_awesome</span>
-                <span>GENERATE</span>
+                <span className="material-symbols-outlined">music_note</span>
+                <span>Componer</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Collapsible Architecture & Telemetry Section */}
-        <div className="architecture-section">
+        {/* Educational Accordion */}
+        <div className="classical-theory-card">
           <button
             type="button"
-            className="architecture-toggle-header"
-            onClick={this.toggleArchitecture}
+            className="theory-toggle-header"
+            onClick={this.toggleTheory}
           >
-            <div className="header-left">
-              <span className="material-symbols-outlined text-primary">architecture</span>
-              <span className="section-title">Audio Synthesis &amp; Algorithmic Architecture</span>
-              <span className="system-tag">SYSTEM SPEC v2.4</span>
+            <div className="theory-header-left">
+              <span className="material-symbols-outlined text-gold">menu_book</span>
+              <span className="theory-title">Fundamentos del Proyecto y Teoría Musical</span>
             </div>
-            <span className="material-symbols-outlined chevron-icon">
-              {showArchitecture ? 'expand_less' : 'expand_more'}
+            <span className="material-symbols-outlined chevron">
+              {showTheory ? 'expand_less' : 'expand_more'}
             </span>
           </button>
 
-          {showArchitecture && (
-            <div className="architecture-body">
-              {/* 4-Bento Bay Grid */}
-              <div className="bento-grid">
-                <div className="bento-card">
-                  <div className="bento-card-header text-primary">
-                    <span className="material-symbols-outlined">account_tree</span>
-                    <h4>Markov Generation</h4>
-                  </div>
+          {showTheory && (
+            <div className="theory-body">
+              <div className="theory-grid">
+                <div className="theory-column">
+                  <h3>Composición Algorítmica</h3>
                   <p>
-                    Employs stochastic pitch matrices constrained to diatonic modes.
-                    Evaluates stepwise transitions (82%) vs harmonic leaps (18%) for melodic coherence.
+                    El algoritmo genera secuencias melódicas basadas en matrices de probabilidad diatónica.
+                    Privilegia el movimiento por grados conjuntos frente a los saltos interválicos, respetando
+                    la cadencia melódica característica del clasicismo de finales del siglo XVIII.
                   </p>
                 </div>
-
-                <div className="bento-card">
-                  <div className="bento-card-header text-secondary">
-                    <span className="material-symbols-outlined">developer_board</span>
-                    <h4>Tone.js Core DSP</h4>
-                  </div>
+                <div className="theory-column">
+                  <h3>Piano de Concierto Salamander</h3>
                   <p>
-                    Precision lookahead Web Audio transport scheduler with sample-accurate event dispatches.
-                    Routes through dynamic stereo reverb and limiter busses.
+                    Las muestras acústicas provienen del banco de sonido <em>Salamander Grand Piano</em>,
+                    grabado en estéreo a 44.1 kHz sobre un piano de cola Yamaha C5 con diferentes capas de
+                    dinámica e interacción del pedal apagador.
                   </p>
                 </div>
-
-                <div className="bento-card">
-                  <div className="bento-card-header text-tertiary">
-                    <span className="material-symbols-outlined">volume_up</span>
-                    <h4>Yamaha C5 Grand</h4>
-                  </div>
+                <div className="theory-column">
+                  <h3>Notación Editorial con VexFlow</h3>
                   <p>
-                    High-resolution 44.1kHz Salamander acoustic grand recorded in stereo with multi-velocity
-                    layers and realistic pedal decay resonance.
+                    La partitura en pantalla se graba vectorialmente en tiempo real mediante <em>VexFlow</em>,
+                    organizando las notas, barras de compás, claves, armaduras y ligaduras conforme a los
+                    cánones tradicionales de la tipografía musical.
                   </p>
-                </div>
-
-                <div className="bento-card">
-                  <div className="bento-card-header text-error">
-                    <span className="material-symbols-outlined">auto_stories</span>
-                    <h4>VexFlow Engraver</h4>
-                  </div>
-                  <p>
-                    Scalable vector engraver rendering authentic Western musical typography. Synchronizes
-                    ticks into staves, stems, beams, and reactive note lighting.
-                  </p>
-                </div>
-              </div>
-
-              {/* Engine Telemetry Strip */}
-              <div className="telemetry-strip">
-                <div className="telemetry-chip">
-                  <span className="chip-label">AudioContext:</span>
-                  <span className="chip-value text-primary">Online (44.1kHz)</span>
-                </div>
-                <div className="telemetry-chip">
-                  <span className="chip-label">Engine:</span>
-                  <span className="chip-value text-secondary">Salamander Grand</span>
-                </div>
-                <div className="telemetry-chip">
-                  <span className="chip-label">Polyphony:</span>
-                  <span className="chip-value text-tertiary">Lookahead Scheduler</span>
-                </div>
-                <div className="telemetry-chip">
-                  <span className="chip-label">Source:</span>
-                  <a
-                    href="https://github.com/seagomezar/AI-Based-Music-Generator-ReactJS"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="chip-link text-primary"
-                  >
-                    GitHub Repo
-                  </a>
                 </div>
               </div>
             </div>
           )}
         </div>
-      </aside>
+      </section>
     );
   }
 }

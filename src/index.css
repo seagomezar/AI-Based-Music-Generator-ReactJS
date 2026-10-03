@@ -1,42 +1,40 @@
 :root {
-  --surface: #0f131d;
-  --surface-dim: #0a0e18;
-  --surface-container-lowest: #0a0e18;
-  --surface-container-low: #171b26;
-  --surface-container: #1c1f2a;
-  --surface-container-high: #262a35;
-  --surface-container-highest: #313540;
-  --surface-bright: #353944;
+  /* Classical Period - Light & Simple Theme Tokens */
+  --bg-page: #f9f7f2;
+  --surface: #ffffff;
+  --surface-alt: #fdfcf9;
+  --surface-warm: #f4efe4;
+  --surface-cream: #faf6ed;
+  
+  --border: #dfd7c7;
+  --border-subtle: #ede7da;
+  --border-gold: #c9a44c;
+  
+  --text-main: #24221f;
+  --text-muted: #666054;
+  --text-dim: #8c8474;
+  
+  --classical-burgundy: #7a1f2d;
+  --classical-burgundy-hover: #601722;
+  --classical-gold: #a67c2e;
+  --classical-gold-hover: #8f6a24;
+  --classical-gold-light: #fbf5e7;
+  
+  --active-note: #b91c1c;
+  --active-note-soft: #fef2f2;
+  --active-gold: #ca8a04;
 
-  --primary: #4cd7f6;
-  --primary-container: #06b6d4;
-  --primary-glow: rgba(76, 215, 246, 0.35);
-  --on-primary: #003640;
-
-  --secondary: #ddb7ff;
-  --secondary-container: #6f00be;
-  --secondary-purple: #a855f7;
-  --on-secondary: #490080;
-
-  --tertiary: #ffb95f;
-  --tertiary-container: #e79400;
-  --on-tertiary: #472a00;
-
-  --error: #f43f5e;
-  --error-glow: rgba(244, 63, 94, 0.4);
-
-  --on-surface: #dfe2f1;
-  --on-surface-variant: #bcc9cd;
-  --outline: #869397;
-  --outline-variant: #3d494c;
-
-  --font-body: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  --radius-xl: 16px;
+
+  --shadow-card: 0 4px 18px rgba(45, 35, 20, 0.06);
+  --shadow-hover: 0 8px 24px rgba(45, 35, 20, 0.1);
 }
 
 * {
@@ -46,11 +44,15 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-body);
-  background-color: var(--surface);
-  background-image: radial-gradient(rgba(76, 215, 246, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-  color: var(--on-surface);
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  background-image: 
+    linear-gradient(rgba(249, 247, 242, 0.94), rgba(246, 242, 234, 0.97)),
+    url('./assets/classical-bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  color: var(--text-main);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -74,44 +76,27 @@ body {
   vertical-align: middle;
 }
 
-/* Scrollbar styling */
+/* Clean, tasteful scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-container-lowest);
+  background: var(--surface-warm);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-container-highest);
+  background: var(--border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--outline);
+  background: var(--text-dim);
 }
 
-/* Keyframes */
-@keyframes pulse-beam {
-  0%, 100% { opacity: 0.9; filter: drop-shadow(0 0 6px var(--error-glow)); }
-  50% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--error-glow)); }
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-@keyframes orbit-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes orbit-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+@keyframes note-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }

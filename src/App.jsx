@@ -12,7 +12,6 @@ class App extends Component {
   constructor() {
     super();
 
-    // Set initial state
     this.state = {
       speed: 100,
       duration: 10,
@@ -24,14 +23,13 @@ class App extends Component {
       activeNote: '',
     };
 
-    // Set the piano instrument
     const baseUrl =
       (import.meta.env.BASE_URL.endsWith('/')
         ? import.meta.env.BASE_URL
         : import.meta.env.BASE_URL + '/') + 'salamander/';
 
     this.piano = new Tone.Sampler(SALAMANDER_PIANO_SOUNDS, {
-      release: 1,
+      release: 1.2,
       baseUrl: baseUrl,
     }).toDestination();
 
@@ -58,7 +56,7 @@ class App extends Component {
     this.setState({
       song,
       generated: true,
-      creationDate: moment(Date.now()).format('DD-MMM-YY HH:mm:ss'),
+      creationDate: moment(Date.now()).format('DD/MM/YYYY HH:mm:ss'),
     });
   }
 
@@ -86,18 +84,18 @@ class App extends Component {
   transformElement(element, kind, note) {
     if (kind === 'circles') {
       this.bringToTop(element);
-      const color = element.getAttribute('data-color') || '#4cd7f6';
+      const color = element.getAttribute('data-color') || '#b3822a';
       const originalRadius = Number(element.getAttribute('r')) || 15;
       element.style.fill = color;
-      element.style.opacity = '1';
-      element.style.r = `${originalRadius + 6}`;
-      element.style.transition = 'all 0.4s ease';
+      element.style.opacity = '0.9';
+      element.style.r = `${originalRadius + 5}`;
+      element.style.transition = 'all 0.35s ease';
       setTimeout(() => {
-        element.style.fill = '#ffffff';
+        element.style.fill = '#948c7d';
         element.style.opacity = '0.35';
         element.style.r = `${originalRadius}`;
-        element.style.transition = 'all 0.4s ease';
-      }, 450);
+        element.style.transition = 'all 0.35s ease';
+      }, 400);
     } else {
       if (~note.indexOf('#')) {
         element.classList.add('black-pressed');
@@ -107,7 +105,7 @@ class App extends Component {
       setTimeout(() => {
         element.classList.remove('black-pressed');
         element.classList.remove('white-pressed');
-      }, 450);
+      }, 400);
     }
   }
 
@@ -120,16 +118,15 @@ class App extends Component {
     new Tone.Part((time, event) => {
       this.piano.triggerAttackRelease(event.note, event.duration, time);
       Tone.Draw.schedule(() => {
-        // Set active note in state for telemetry badges
         this.setState({ activeNote: event.note });
 
-        // 1. Visualizator Circle or Piano Key Highlight
+        // Highlight element on visualizer
         const element = document.getElementById(event.note);
         if (element) {
           this.transformElement(element, this.state.visualizatorType, event.note);
         }
 
-        // 2. Sheet Music Note Highlight
+        // Highlight note in sheet music
         const noteElement = document.getElementById(event.vfId);
         if (noteElement) {
           noteElement.classList.add('note-highlight');
@@ -177,75 +174,85 @@ class App extends Component {
       this.state;
 
     return (
-      <div className="studio-root">
-        {/* Top Studio Workstation Navbar */}
-        <header className="studio-topbar">
-          <div className="topbar-inner">
-            {/* Brand Anchor */}
-            <div className="brand-group">
-              <div className="brand-icon-box">
-                <span className="material-symbols-outlined text-primary">graphic_eq</span>
+      <div className="classical-app-root">
+        {/* Classical Header Navigation */}
+        <header className="classical-navbar">
+          <div className="navbar-content">
+            <div className="brand-classical">
+              <div className="clef-emblem">
+                <svg viewBox="0 0 40 40" className="clef-svg" fill="currentColor">
+                  <circle cx="20" cy="20" r="18" fill="#fdfbf7" stroke="#c9a44c" strokeWidth="1.5" />
+                  <path
+                    d="M19.5 28c-1.8 0-3.2-.8-4.1-2.3-.9-1.5-1.1-3.4-.6-5.5.5-2 1.5-4 2.9-5.8 1.3-1.7 3-3.2 4.9-4.5.5-.4 1-.7 1.6-1.1-.4-2.5-.9-5.9-1.3-8.8 0-1.6.4-3 1.3-4 1-1 2.2-1.5 3.8-1.5 1.5 0 2.6.4 3.5 1.2.8.8 1.2 2 1.2 3.3 0 1.8-.6 4.1-1.8 6.8-1.1 2.5-2.6 5.3-4.1 8l1.1 8.3c1.1-.5 2.2-.8 3.3-.8 2.7 0 5.1 1.1 6.9 3.1 1.7 2 2.6 4.6 2.4 7.4-.2 2.9-1.5 5.6-3.6 7.5-2.2 1.9-4.9 2.9-7.9 2.8-2.5 0-4.8-.8-6.5-2.3l-.9 6.9c-.4 3-1.1 5.5-2.3 7.1-1.2 1.6-2.8 2.5-4.7 2.5-1.6 0-2.8-.5-3.7-1.5-.9-1-1.4-2.3-1.4-3.8 0-1.8.7-3.3 1.9-4.4 1.2-1 2.7-1.6 4.4-1.6.6 0 1.1.1 1.6.3-.1.9-.2 1.7-.2 2.3 0 1.3.2 2.3.7 3 .5.6 1.1.9 2 .9 1.2 0 2.1-.7 2.8-2 .7-1.3 1.1-3.4 1.3-6l1.3-9.5c-1.8 1-3.6 1.7-5.5 1.7z"
+                    transform="translate(-6, -4) scale(0.65)"
+                    fill="#7a1f2d"
+                  />
+                </svg>
               </div>
-              <div className="brand-text-col">
-                <span className="brand-title">AI Music Studio</span>
-                <span className="brand-subtitle">
-                  Algorithmic Melody Composer • Tone.js &amp; VexFlow
-                </span>
+              <div className="brand-text">
+                <h1 className="brand-heading">Atelier de Música Clásica</h1>
+                <p className="brand-caption">
+                  Composición Algorítmica Inspirada en el Clasicismo Vienés
+                </p>
               </div>
             </div>
 
-            {/* Global Telemetry Badges */}
-            <div className="telemetry-badges-group">
-              <div className="topbar-chip">
-                <span className="telemetry-live-dot" />
-                <span className="chip-dim">Tempo:</span>
-                <span className="chip-highlight">{speed} BPM</span>
-              </div>
-
-              <div className="topbar-chip hidden-sm">
-                <span className="chip-dim">Engine:</span>
-                <span className="chip-val text-secondary">Salamander Grand 44.1kHz</span>
+            {/* Quick Status / Actions */}
+            <div className="navbar-quick-controls">
+              <div className="status-pill">
+                <span className="pill-dot" />
+                <span className="pill-label">Tempo:</span>
+                <span className="pill-value">{speed} BPM</span>
               </div>
 
               {activeNote && (
-                <div className="topbar-chip active-voice-chip">
-                  <span className="live-error-dot" />
-                  <span className="chip-dim">Active Voice:</span>
-                  <span className="chip-highlight-error">{activeNote}</span>
+                <div className="status-pill active-note-pill">
+                  <span className="pill-label">Sonando:</span>
+                  <span className="pill-value highlight">{activeNote}</span>
                 </div>
               )}
-            </div>
 
-            {/* Quick Actions in Navbar */}
-            <div className="topbar-actions">
               <button
                 type="button"
-                className={`topbar-transport-btn ${isPlaying ? 'playing' : ''}`}
+                className={`btn-classical-transport ${isPlaying ? 'is-playing' : ''}`}
                 onClick={isPlaying ? this.handleStopSong : this.handlePlaySong}
-                title={isPlaying ? 'Stop Melody Playback' : 'Start Melody Playback'}
+                title={isPlaying ? 'Detener interpretación' : 'Interpretar melodía'}
               >
                 <span className="material-symbols-outlined">
                   {isPlaying ? 'stop' : 'play_arrow'}
                 </span>
-                <span>{isPlaying ? 'Stop' : 'Play'}</span>
+                <span>{isPlaying ? 'Detener' : 'Interpretar'}</span>
               </button>
 
               <button
                 type="button"
-                className="topbar-generate-btn"
+                className="btn-classical-compose"
                 onClick={() => this.handleRun(speed, duration, CURRENT_SCALE)}
-                title="Generate New Algorithmic Melody"
+                title="Generar nueva melodía clásica"
               >
-                <span className="material-symbols-outlined">auto_awesome</span>
-                <span>Generate</span>
+                <span className="material-symbols-outlined">music_note</span>
+                <span>Componer</span>
               </button>
             </div>
           </div>
         </header>
 
-        {/* Workspace Canvas Container */}
-        <main className="studio-main-content">
-          {/* Master Parameter Console */}
+        {/* Hero Classical Salon Banner */}
+        <div className="classical-hero-banner">
+          <div className="hero-overlay">
+            <div className="hero-text-content">
+              <span className="hero-tradition-tag">Música Clásica • 1750–1820</span>
+              <h2 className="hero-quote">
+                «La música no debe ofender jamás al oído, sino deleitarlo constantemente»
+              </h2>
+              <p className="hero-attribution">— Wolfgang Amadeus Mozart</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Composition Canvas */}
+        <main className="classical-main-container">
+          {/* Panel de Ajustes y Parámetros */}
           <Panel
             tempo={speed}
             duration={duration}
@@ -257,7 +264,7 @@ class App extends Component {
             handleChangeVisualization={this.handleChangeVisualization}
           />
 
-          {/* Sheet Music Score Stage */}
+          {/* Partitura Clásica */}
           {song && song.length > 0 ? (
             <Song
               song={song}
@@ -267,15 +274,43 @@ class App extends Component {
               handlePlaySong={this.handlePlaySong}
             />
           ) : (
-            <div className="score-loading-card">
-              <span className="material-symbols-outlined spin-icon">progress_activity</span>
-              <span>Engraving Algorithmic Sheet Music...</span>
+            <div className="sheet-loading-card">
+              <span className="material-symbols-outlined loading-spin">hourglass_top</span>
+              <p>Grabando la partitura musical...</p>
             </div>
           )}
 
-          {/* Dual-Mode Visualizer Stage */}
+          {/* Visualizador de Piano Acústico Tradicional */}
           <Visualizator type={visualizatorType} activeNote={activeNote} />
         </main>
+
+        {/* Classical Footer */}
+        <footer className="classical-footer">
+          <div className="footer-content">
+            <p className="footer-title">Atelier de Música Clásica</p>
+            <p className="footer-desc">
+              Composición musical estocástica con modelos de transición armónica basada en la época clásica.
+              Audio sintetizado con muestras de alta resolución de piano acústico Salamander y notación vectorial VexFlow.
+            </p>
+            <div className="footer-links">
+              <a
+                href="https://github.com/seagomezar/AI-Based-Music-Generator-ReactJS"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Código en GitHub
+              </a>
+              <span>•</span>
+              <a href="https://musical-artifacts.com/artifacts/3" target="_blank" rel="noreferrer">
+                Salamander Grand Piano
+              </a>
+              <span>•</span>
+              <a href="https://tonejs.github.io/" target="_blank" rel="noreferrer">
+                Tone.js
+              </a>
+            </div>
+          </div>
+        </footer>
       </div>
     );
   }

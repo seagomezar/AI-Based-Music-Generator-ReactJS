@@ -24,10 +24,10 @@ class Piano extends Component {
 
     piano.innerHTML = '';
     const containerWidth = piano.parentElement ? piano.parentElement.clientWidth : window.innerWidth;
-    const height = 130;
+    const height = 125;
 
     // Filter white notes to count total white keys
-    const whiteNotesCount = ALL_FULL_NOTES.filter(n => !n.includes('#')).length;
+    const whiteNotesCount = ALL_FULL_NOTES.filter((n) => !n.includes('#')).length;
     const keyWidth = Math.max(16, (containerWidth - 24) / whiteNotesCount);
     const blackWidth = keyWidth * 0.65;
 
@@ -62,26 +62,23 @@ class Piano extends Component {
 
   render() {
     return (
-      <div className="piano-stage-wrapper">
-        <div className="piano-header">
-          <div className="piano-header-title">
-            <span className="material-symbols-outlined text-primary">piano</span>
-            <span className="title-text">Studio Piano Keyboard Deck (C1 – C7)</span>
+      <div className="classical-piano-wrapper">
+        <div className="piano-wood-header">
+          <div className="header-left">
+            <span className="material-symbols-outlined text-gold">piano</span>
+            <span className="piano-header-title">Piano de Cola Acústico</span>
           </div>
-          <div className="piano-telemetry">
-            <span className="piano-indicator-dot" />
-            <span>Active Key Illumination • 73 Voices</span>
-          </div>
+          <span className="piano-header-meta">Teclado de 73 Teclas (C1 – C7)</span>
         </div>
 
-        <div className="piano-chassis">
-          <div className="piano-fallboard-trim" />
-          <div className="piano-scroll-container">
+        <div className="piano-case">
+          <div className="piano-brass-fallboard" />
+          <div className="piano-keybed-scroll">
             <ul id="piano" ref={this.pianoRef} className="piano-keys-list" />
           </div>
-          <div className="piano-under-bezel">
-            <span>Velocity Profile: 127 Level Linear</span>
-            <span>Salamander Acoustic Polyphonic Grand • Full Bed</span>
+          <div className="piano-lower-lip">
+            <span>Muestras acústicas Yamaha C5 • 44.1 kHz Estéreo</span>
+            <span>Resonancia natural y pedal apagador</span>
           </div>
         </div>
       </div>

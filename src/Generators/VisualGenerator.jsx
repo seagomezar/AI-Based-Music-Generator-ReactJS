@@ -18,13 +18,13 @@ function getRandomY() {
 
 function getRandomColor() {
   const palette = [
-    '#4cd7f6', // electric cyan
-    '#ddb7ff', // neon purple
-    '#ffb95f', // warm amber
-    '#f43f5e', // coral red
-    '#38bdf8', // sky blue
-    '#a855f7', // violet
-    '#34d399', // emerald
+    '#a67c2e', // classical gold
+    '#7a1f2d', // classical burgundy
+    '#b45309', // amber bronze
+    '#0f766e', // deep teal
+    '#9a3412', // terracotta
+    '#1e3a8a', // royal blue
+    '#c2410c', // warm sienna
   ];
   return palette[Math.floor(Math.random() * palette.length)];
 }

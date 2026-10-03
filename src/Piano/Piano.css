@@ -1,72 +1,68 @@
-/* Studio Piano Keyboard Deck Styles */
+/* Acoustic Grand Piano Keyboard - Classical Theme */
 
-.piano-stage-wrapper {
+.classical-piano-wrapper {
   width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  box-sizing: border-box;
+  margin-bottom: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-card);
 }
 
-.piano-header {
+.piano-wood-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 0.75rem;
-  background: var(--surface-container-high);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  border: 1px solid var(--outline-variant);
+  padding: 0.6rem 0.85rem;
+  background: var(--surface-cream);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 1px solid var(--border);
   border-bottom: none;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-gold {
+  color: var(--classical-gold);
+  font-size: 20px;
+}
+
 .piano-header-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.piano-header-title .title-text {
-  font-size: 0.95rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
   font-weight: 600;
-  color: var(--on-surface);
+  color: var(--text-main);
 }
 
-.piano-telemetry {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--on-surface-variant);
+.piano-header-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
-.piano-indicator-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--primary);
-  box-shadow: 0 0 6px var(--primary-glow);
+/* Piano Case (Mahogany Wood Finish) */
+.piano-case {
+  background: #2b140e;
+  border: 1px solid #1a0b07;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  padding: 0.5rem 0.85rem 0.75rem 0.85rem;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(45, 20, 10, 0.2);
 }
 
-.piano-chassis {
-  background: #0b0e14;
-  border: 1px solid var(--outline-variant);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  padding: 0.5rem 0.75rem 0.75rem 0.75rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-  position: relative;
-}
-
-/* Red felt / carbon lip */
-.piano-fallboard-trim {
-  height: 6px;
+/* Brass Trim */
+.piano-brass-fallboard {
+  height: 4px;
   width: 100%;
-  background: linear-gradient(90deg, #450a0a 0%, #1e293b 50%, #450a0a 100%);
-  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  background: linear-gradient(90deg, #a67c2e 0%, #c9a44c 50%, #a67c2e 100%);
   border-radius: 2px 2px 0 0;
   margin-bottom: 2px;
 }
 
-.piano-scroll-container {
+.piano-keybed-scroll {
   width: 100%;
   overflow-x: auto;
   padding-bottom: 4px;
@@ -82,73 +78,74 @@
   min-width: 100%;
 }
 
+/* White Ivory Keys */
 .white {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
-  background: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 65%, #e2e8f0 100%);
-  border: 1px solid #cbd5e1;
+  background: linear-gradient(to bottom, #fffdfa 0%, #fbf7ee 65%, #f1ebdc 100%);
+  border: 1px solid #d5cbb8;
   border-top: none;
   border-radius: 0 0 3px 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   padding-bottom: 6px;
-  box-sizing: border-box;
   user-select: none;
+  box-sizing: border-box;
   transition: background 0.1s ease, box-shadow 0.1s ease, transform 0.05s ease;
 }
 
+/* Black Ebony Keys */
 .black {
   position: relative;
   z-index: 2;
   flex-shrink: 0;
-  background: linear-gradient(to bottom, #1e293b 0%, #0f172a 70%, #020617 100%);
-  border: 1px solid #334155;
+  background: linear-gradient(to bottom, #2d2926 0%, #1a1715 70%, #0d0c0a 100%);
+  border: 1px solid #3d3733;
   border-top: none;
   border-radius: 0 0 3px 3px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-  box-sizing: border-box;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
   user-select: none;
+  box-sizing: border-box;
   transition: background 0.1s ease, box-shadow 0.1s ease, transform 0.05s ease;
 }
 
 .key-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 700;
-  color: #64748b;
+  color: #78716c;
   pointer-events: none;
 }
 
-/* Lit / Pressed Key Effects */
+/* Warm, natural keypress feedback */
 .white-pressed {
-  background: linear-gradient(to bottom, #cffafe 0%, #67e8f9 50%, #06b6d4 100%) !important;
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.95), inset 0 0 6px #ffffff !important;
-  border-color: #22d3ee !important;
-  transform: translateY(2px);
+  background: linear-gradient(to bottom, #fef9c3 0%, #fef08a 60%, #fde047 100%) !important;
+  box-shadow: 0 0 14px rgba(234, 179, 8, 0.75), inset 0 0 4px #ffffff !important;
+  border-color: #ca8a04 !important;
+  transform: translateY(1.5px);
 }
 
 .white-pressed .key-label {
-  color: #083344;
+  color: #713f12;
 }
 
 .black-pressed {
-  background: linear-gradient(to bottom, #7e22ce 0%, #a855f7 60%, #c084fc 100%) !important;
-  box-shadow: 0 0 22px rgba(168, 85, 247, 0.95), inset 0 0 6px #ffffff !important;
-  border-color: #d8b4fe !important;
-  transform: translateY(2px);
+  background: linear-gradient(to bottom, #7a1f2d 0%, #991b1b 100%) !important;
+  box-shadow: 0 0 14px rgba(185, 28, 28, 0.75), inset 0 0 4px #fecaca !important;
+  border-color: #ef4444 !important;
+  transform: translateY(1.5px);
 }
 
-.piano-under-bezel {
+.piano-lower-lip {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--outline);
+  font-size: 0.75rem;
+  color: #bfa59a;
   margin-top: 0.5rem;
   padding: 0 4px;
 }

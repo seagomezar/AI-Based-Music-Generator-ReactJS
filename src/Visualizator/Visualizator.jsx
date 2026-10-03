@@ -32,70 +32,52 @@ class Visualizator extends Component {
 
     if (type !== 'circles') {
       return (
-        <section className="visualizer-stage-card">
+        <section className="classical-visualizer-container">
           <Piano />
         </section>
       );
     }
 
     return (
-      <section className="visualizer-stage-card">
-        <div className="visualizer-header">
-          <div className="visualizer-header-title">
-            <span className="material-symbols-outlined text-secondary">blur_circular</span>
-            <span className="title-text">Harmonic Resonance Orbit (Cosmic Mode)</span>
-          </div>
-          <div className="visualizer-telemetry">
-            <span className="telemetry-pill">FFT: 512 Bands</span>
-            {activeNote && (
-              <span className="telemetry-pill active">Resonance: {activeNote}</span>
-            )}
-          </div>
-        </div>
-
-        <div className="cosmic-canvas-frame">
-          {/* Orbital Ambient Rings */}
-          <div className="orbital-ring ring-outer" />
-          <div className="orbital-ring ring-mid" />
-          <div className="orbital-ring ring-inner" />
-
-          {/* Center Singularity Core */}
-          <div className="cosmic-center-core">
-            <div className="core-icon-orb">
-              <span className="material-symbols-outlined text-white">graphic_eq</span>
+      <section className="classical-visualizer-container">
+        <div className="harmonic-visualizer-card">
+          <div className="harmonic-header">
+            <div className="harmonic-header-left">
+              <span className="material-symbols-outlined text-gold">grain</span>
+              <h3 className="harmonic-title">Resonancia Armónica Acústica</h3>
             </div>
-            <span className="core-label">{activeNote || 'Resonance Core'}</span>
+            <div className="harmonic-meta">
+              {activeNote ? (
+                <span className="harmonic-active-pill">
+                  Nota Activa: <strong>{activeNote}</strong>
+                </span>
+              ) : (
+                <span className="harmonic-idle-pill">Espacio Armónico</span>
+              )}
+            </div>
           </div>
 
-          {/* Floating Lissajous Sine Wave line */}
-          <svg className="cosmic-lissajous-wave" viewBox="0 0 1200 320" preserveAspectRatio="none">
-            <path
-              d="M 0,160 Q 300,40 600,160 T 1200,160"
-              fill="none"
-              stroke="rgba(76, 215, 246, 0.25)"
-              strokeWidth="2"
-            />
-            <path
-              d="M 0,160 Q 300,280 600,160 T 1200,160"
-              fill="none"
-              stroke="rgba(221, 183, 255, 0.25)"
-              strokeWidth="1.5"
-            />
-          </svg>
+          <div className="harmonic-canvas-box">
+            {/* Center Classical Emblem */}
+            <div className="harmonic-center-orb">
+              <span className="material-symbols-outlined orb-icon">music_note</span>
+              <span className="orb-text">{activeNote || 'Tonalidad Diatónica'}</span>
+            </div>
 
-          {/* Interactive Reactive Circles SVG Layer */}
-          <svg
-            className="cosmic-circles-svg"
-            viewBox="0 0 1200 320"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            {this.state.circles}
-          </svg>
-        </div>
+            {/* Reactive Circles Layer */}
+            <svg
+              className="harmonic-svg"
+              viewBox="0 0 1200 320"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {this.state.circles}
+            </svg>
+          </div>
 
-        <div className="visualizer-footer">
-          <span>Mode: Diatonic Particle Distribution</span>
-          <span className="text-secondary">Spatial Resonance Spectrum • 36 Nodes</span>
+          <div className="harmonic-footer">
+            <span>Distribución de frecuencias armónicas</span>
+            <span>Muestreo polifónico acústico</span>
+          </div>
         </div>
       </section>
     );

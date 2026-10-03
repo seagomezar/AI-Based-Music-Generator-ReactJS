@@ -7,6 +7,17 @@ import {
 import { Renderer, Stave, StaveNote, Accidental, Formatter, Beam, Barline } from "vexflow";
 import "./Song.css";
 
+const SCALE_NAMES_ES = {
+  'C': 'Do',
+  'D': 'Re',
+  'E': 'Mi',
+  'F': 'Fa',
+  'G': 'Sol',
+  'A': 'La',
+  'B': 'Si',
+  'F#': 'Fa#',
+};
+
 class Song extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +39,7 @@ class Song extends Component {
     const container = this.tabRef.current || document.getElementById("tab");
     if (!container) return;
 
-    // Clear previous render cleanly
+    // Clear previous render
     container.innerHTML = "";
 
     const containerWidth = container.clientWidth || Math.min(1140, window.innerWidth - 80);
@@ -41,7 +52,6 @@ class Song extends Component {
     renderer.resize(width, linesCount * 140 + 80);
     const context = renderer.getContext();
 
-    // Scale group to look crisp
     let stave = new Stave(10, 30, measureWidth);
     stave
       .addClef("treble")
@@ -86,7 +96,6 @@ class Song extends Component {
           b.setContext(context).draw();
         });
 
-        // Ensure IDs exist on the generated SVG elements for note highlighting
         currentBar.forEach((note, index) => {
           const el = note.getSVGElement ? note.getSVGElement() : (note.attrs && note.attrs.el);
           if (el) {
@@ -101,7 +110,6 @@ class Song extends Component {
           b.setContext(context).draw();
         });
 
-        // Ensure IDs exist on the generated SVG elements for note highlighting
         currentBar.forEach((note, index) => {
           const el = note.getSVGElement ? note.getSVGElement() : (note.attrs && note.attrs.el);
           if (el) {
@@ -141,72 +149,46 @@ class Song extends Component {
 
   render() {
     const { song, creationDate, tempo, activeNote } = this.props;
+    const tonalityName = SCALE_NAMES_ES[CURRENT_SCALE] || CURRENT_SCALE;
 
     return (
-      <section className="song-stage-card">
-        {/* Score Chassis Header */}
-        <div className="score-header">
-          <div className="score-header-title">
-            <span className="score-status-dot" />
-            <div>
-              <h3 className="score-title">
-                Improvisation created over {CURRENT_SCALE} Major Scale
-              </h3>
-              <p className="score-subtitle">
-                Generated {creationDate} • Tempo: {tempo} BPM • Engine: VexFlow Vector Engraver
-              </p>
-            </div>
+      <section className="classical-sheet-card">
+        {/* Card Header */}
+        <div className="sheet-card-header">
+          <div className="sheet-title-group">
+            <h3 className="sheet-piece-title">
+              Improvisación en {tonalityName} Mayor
+            </h3>
+            <p className="sheet-piece-meta">
+              Partitura clásica • {creationDate} • {song ? song.length : 0} compases
+            </p>
           </div>
 
-          <div className="score-header-badges">
+          <div className="sheet-badges">
             {activeNote ? (
-              <div className="score-badge active-note-badge">
-                <span className="live-dot" />
-                <span className="badge-dim">Playing:</span>
-                <span className="badge-highlight">{activeNote}</span>
-              </div>
+              <span className="badge-playing">
+                Interpretando: <strong>{activeNote}</strong>
+              </span>
             ) : (
-              <div className="score-badge">
-                <span className="badge-dim">Status:</span>
-                <span className="badge-val">Ready</span>
-              </div>
+              <span className="badge-ready">Partitura Lista</span>
             )}
-            <div className="score-badge">
-              <span className="badge-dim">Measures:</span>
-              <span className="badge-primary">{song ? song.length : 0}</span>
-            </div>
           </div>
         </div>
 
-        {/* The Pristine Score Paper Canvas */}
-        <div className="score-paper-canvas">
-          {/* Parchment Rivet Accents */}
-          <span className="paper-screw top-left" />
-          <span className="paper-screw top-right" />
-          <span className="paper-screw bottom-left" />
-          <span className="paper-screw bottom-right" />
-
-          {/* Classical Title Banner on Paper */}
-          <div className="paper-top-banner">
-            <span className="banner-tempo">Tempo = {tempo} • Espressivo e Cantabile</span>
-            <span className="banner-source">Salamander Polyphonic Grand / Algorithmic Composition</span>
+        {/* Paper Score Canvas */}
+        <div className="sheet-paper">
+          <div className="paper-header-row">
+            <span className="paper-tempo-text">
+              Tempo = {tempo} • <em>Espressivo e Cantabile</em>
+            </span>
+            <span className="paper-instrument-text">Piano Solo</span>
           </div>
 
-          {/* VexFlow Notation SVG Render Target */}
-          <div id="tab" ref={this.tabRef} className="score-svg-viewport"></div>
+          <div id="tab" ref={this.tabRef} className="sheet-svg-container"></div>
 
-          {/* Score Lower Information Bar */}
-          <div className="paper-bottom-banner">
-            <div className="banner-meta-items">
-              <span>Clef: Treble (G2)</span>
-              <span>•</span>
-              <span>Key: {CURRENT_SCALE} Major</span>
-              <span>•</span>
-              <span>Time: 4/4 Meter</span>
-            </div>
-            <div className="banner-engine-status">
-              VexFlow Canvas Buffer: Dynamic Path Interpolation Active
-            </div>
+          <div className="paper-footer-row">
+            <span>Clave de Sol • Tonalidad de {tonalityName} Mayor • Compás de 4/4</span>
+            <span>Edición gráfica con VexFlow</span>
           </div>
         </div>
       </section>
