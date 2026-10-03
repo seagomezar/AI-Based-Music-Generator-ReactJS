@@ -54,11 +54,11 @@ export const MAJOR_SCALES = {
     "C": ["C1", "D1", "E1", "F1", "G1", "A1", "B1", "C2"],
     "D": ["D1", "E1", "F#1", "G1", "A1", "B1", "C#2", "D2"],
     "E": ["E1", "F#1", "G#1", "A1", "B1", "C#2", "D#2", "E2"],
-    "F": ["F1", "G1", "A1", "A#1", "C2", "D2", "E2", "F2"],
+    "F": ["F1", "G1", "A1", "Bb1", "C2", "D2", "E2", "F2"],
     "G": ["G1", "A1", "B1", "C2", "D2", "E2", "F#2", "G2"],
     "A": ["A1", "B1", "C#2", "D2", "E2", "F#2", "G#2", "A2"],
     "B": ["B1", "C#2", "D#2", "E2", "F#2", "G#2", "A#2", "B2"],
-    "F#": ["F#1", "G#1", "A#1", "C#2", "D#2", "E#2", "F2"],
+    "F#": ["F#1", "G#1", "A#1", "B1", "C#2", "D#2", "E#2", "F#2"],
 };
 
 export const NICE_SONGS = [
@@ -72,9 +72,31 @@ export const NICE_SONGS = [
 
 function setScale(scale, octave) {
     let setOfNotes = scale.map(e => {
-        return e.replace("2", octave + 1).replace("1", octave);
+        return e.replace(/(\d+)$/, (match) => match === '2' ? octave + 1 : octave);
     });
     return setOfNotes;
+}
+
+export function getCanonicalPianoNote(note) {
+    if (!note) return '';
+    const enharmonics = {
+        'Bb': 'A#',
+        'Db': 'C#',
+        'Eb': 'D#',
+        'Gb': 'F#',
+        'Ab': 'G#',
+        'E#': 'F',
+        'B#': 'C',
+        'Cb': 'B',
+    };
+    const match = note.match(/^([A-Ga-g][#b]?)([0-9])$/);
+    if (!match) return note;
+    const pitch = match[1];
+    const octave = match[2];
+    if (enharmonics[pitch]) {
+        return `${enharmonics[pitch]}${octave}`;
+    }
+    return note;
 }
 
 function pickRandomProperty(obj) {

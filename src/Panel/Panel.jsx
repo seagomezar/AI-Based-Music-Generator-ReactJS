@@ -29,7 +29,7 @@ class Panel extends Component {
     this.state = {
       duration: props.duration || 10,
       speed: props.tempo || 100,
-      scale: 'C',
+      scale: props.scale || 'C',
       visualizationType: props.visualizatorType || 'piano',
       showTheory: false,
     };
@@ -52,6 +52,9 @@ class Panel extends Component {
     }
     if (prevProps.visualizatorType !== this.props.visualizatorType) {
       this.setState({ visualizationType: this.props.visualizatorType });
+    }
+    if (prevProps.scale !== this.props.scale) {
+      this.setState({ scale: this.props.scale });
     }
   }
 

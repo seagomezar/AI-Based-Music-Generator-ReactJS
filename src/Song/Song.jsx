@@ -4,7 +4,7 @@ import {
   getNotationForPaint,
   CURRENT_SCALE,
 } from "../Constants";
-import { Renderer, Stave, StaveNote, Accidental, Formatter, Beam, Barline } from "vexflow";
+import { Renderer, Stave, StaveNote, Voice, Accidental, Formatter, Beam, Barline } from "vexflow";
 import "./Song.css";
 
 const SCALE_NAMES_ES = {
@@ -17,6 +17,13 @@ const SCALE_NAMES_ES = {
   'B': 'Si',
   'F#': 'Fa#',
 };
+
+export function soundToVexKey(sound) {
+  if (!sound) return "c/4";
+  const match = sound.match(/^([A-Ga-g][#b]?)([0-9])$/);
+  if (!match) return sound.toLowerCase();
+  return `${match[1].toLowerCase()}/${match[2]}`;
+}
 
 class Song extends Component {
   constructor(props) {
@@ -42,6 +49,8 @@ class Song extends Component {
     // Clear previous render
     container.innerHTML = "";
 
+    const activeScale = this.props.scale || CURRENT_SCALE;
+
     const containerWidth = container.clientWidth || Math.min(1140, window.innerWidth - 80);
     const width = Math.max(320, containerWidth - 10);
     const measureWidth = 240;
@@ -56,7 +65,7 @@ class Song extends Component {
     stave
       .addClef("treble")
       .addTimeSignature("4/4")
-      .addKeySignature(CURRENT_SCALE)
+      .addKeySignature(activeScale)
       .setTempo({ duration: "q", bpm: tempo }, -20);
 
     let currentBar = [];
@@ -67,24 +76,24 @@ class Song extends Component {
 
       for (let j = 0; j < notes.length; j++) {
         const note = notes[j];
-        const sound = CURRENT_SOUNDS[note.sound];
-        let scale = sound[1];
-        if (note.accidental) {
-          scale = sound[2];
-        }
-        let duration = getNotationForPaint(note.duration);
-        let item = new StaveNote({
-          keys: [sound[0].replace("#", "") + "/" + scale],
+        const sound = CURRENT_SOUNDS[note.sound] || "C4";
+        const duration = getNotationForPaint(note.duration);
+        const vexKey = soundToVexKey(sound);
+        const item = new StaveNote({
+          keys: [vexKey],
           duration: duration,
         });
-
-        if (note.accidental) {
-          item.addModifier(new Accidental("#"), 0);
-        }
 
         item.setAttribute("id", `${i}-${j}`);
         currentBar.push(item);
       }
+
+      // Automatically apply key signature accidentals via VexFlow.
+      // Notes already sharped or flatted by the key signature (e.g. F#, C#, G#, D#, A# in B Major)
+      // will NOT have redundant accidental signs painted on them.
+      const voice = new Voice({ num_beats: 4, beat_value: 4 }).setMode(Voice.Mode.SOFT);
+      voice.addTickables(currentBar);
+      Accidental.applyAccidentals([voice], activeScale);
 
       let beams;
       if (i === song.length - 1) {
@@ -122,7 +131,7 @@ class Song extends Component {
           x = 10;
           stave = new Stave(x, y, measureWidth);
           stave.addClef("treble");
-          stave.addKeySignature(CURRENT_SCALE);
+          stave.addKeySignature(activeScale);
         } else {
           stave = new Stave(x, y, measureWidth);
         }
@@ -138,7 +147,11 @@ class Song extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.song !== this.props.song || prevProps.tempo !== this.props.tempo) {
+    if (
+      prevProps.song !== this.props.song ||
+      prevProps.tempo !== this.props.tempo ||
+      prevProps.scale !== this.props.scale
+    ) {
       this.paintSong(this.props.song, this.props.tempo);
     }
   }
@@ -148,8 +161,9 @@ class Song extends Component {
   }
 
   render() {
-    const { song, creationDate, tempo, activeNote } = this.props;
-    const tonalityName = SCALE_NAMES_ES[CURRENT_SCALE] || CURRENT_SCALE;
+    const { song, creationDate, tempo, activeNote, scale } = this.props;
+    const activeScale = scale || CURRENT_SCALE;
+    const tonalityName = SCALE_NAMES_ES[activeScale] || activeScale;
 
     return (
       <section className="classical-sheet-card">

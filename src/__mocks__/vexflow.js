@@ -42,8 +42,17 @@ export class StaveNote {
   getSVGElement() { return null; }
 }
 
+export class Voice {
+  constructor() {
+    this.addTickables = fn().mockReturnValue(this);
+    this.setMode = fn().mockReturnValue(this);
+  }
+}
+Voice.Mode = { STRICT: 1, SOFT: 2, FULL: 3 };
+
 export class Accidental {
   constructor() {}
+  static applyAccidentals = fn();
 }
 
 export const Formatter = {
@@ -68,6 +77,7 @@ const mockVex = {
   Stave,
   StaveNote,
   Accidental,
+  Voice,
   Formatter,
   Beam,
   Barline,

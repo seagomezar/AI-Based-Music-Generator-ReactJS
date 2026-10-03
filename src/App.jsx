@@ -4,7 +4,14 @@ import Panel from './Panel/Panel';
 import Song from './Song/Song';
 import Visualizator from './Visualizator/Visualizator';
 import { generateSong } from './Generators/MusicGenerator';
-import { CURRENT_SOUNDS, SALAMANDER_PIANO_SOUNDS, getNotationForPlay, changeScale, CURRENT_SCALE } from './Constants';
+import {
+  CURRENT_SOUNDS,
+  SALAMANDER_PIANO_SOUNDS,
+  getNotationForPlay,
+  changeScale,
+  CURRENT_SCALE,
+  getCanonicalPianoNote,
+} from './Constants';
 import './App.css';
 import moment from 'moment';
 
@@ -15,6 +22,7 @@ class App extends Component {
     this.state = {
       speed: 100,
       duration: 10,
+      scale: CURRENT_SCALE,
       generated: false,
       song: [],
       isPlaying: false,
@@ -72,6 +80,7 @@ class App extends Component {
         newSong.push({
           time: i + ':' + currentTempo,
           note: sound,
+          canonicalNote: getCanonicalPianoNote(sound),
           duration: duration,
           vfId: `vf-${i}-${j}`,
         });
@@ -120,8 +129,11 @@ class App extends Component {
       Tone.Draw.schedule(() => {
         this.setState({ activeNote: event.note });
 
-        // Highlight element on visualizer
-        const element = document.getElementById(event.note);
+        // Highlight element on visualizer (piano key or circle)
+        let element = document.getElementById(event.note);
+        if (!element && event.canonicalNote) {
+          element = document.getElementById(event.canonicalNote);
+        }
         if (element) {
           this.transformElement(element, this.state.visualizatorType, event.note);
         }
@@ -152,11 +164,13 @@ class App extends Component {
 
   handleRun(speed, duration, scale) {
     this.handleStopSong();
-    changeScale(scale);
+    const targetScale = scale || this.state.scale;
+    changeScale(targetScale);
     this.setState(
       {
         duration,
         speed,
+        scale: targetScale,
         song: [],
       },
       () => {
@@ -227,7 +241,7 @@ class App extends Component {
               <button
                 type="button"
                 className="btn-classical-compose"
-                onClick={() => this.handleRun(speed, duration, CURRENT_SCALE)}
+                onClick={() => this.handleRun(speed, duration, this.state.scale)}
                 title="Generar nueva melodía clásica"
               >
                 <span className="material-symbols-outlined">music_note</span>
@@ -256,6 +270,7 @@ class App extends Component {
           <Panel
             tempo={speed}
             duration={duration}
+            scale={this.state.scale}
             isPlaying={isPlaying}
             visualizatorType={visualizatorType}
             handleRun={this.handleRun}
@@ -270,6 +285,7 @@ class App extends Component {
               song={song}
               creationDate={creationDate}
               tempo={speed}
+              scale={this.state.scale}
               activeNote={activeNote}
               handlePlaySong={this.handlePlaySong}
             />
