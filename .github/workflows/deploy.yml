@@ -39,6 +39,11 @@ jobs:
       - name: Build production bundle
         run: npm run build
 
+      - name: Prepare static files for GitHub Pages
+        run: |
+          touch build/.nojekyll
+          cp build/index.html build/404.html
+
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4
