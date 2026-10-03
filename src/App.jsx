@@ -25,9 +25,10 @@ class App extends Component {
 		};
 
 		// Set the piano instrument
+		const baseUrl = (import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : import.meta.env.BASE_URL + '/') + 'salamander/';
 		this.piano = new Tone.Sampler(SALAMANDER_PIANO_SOUNDS, {
 			'release': 1,
-			'baseUrl': import.meta.env.BASE_URL + '/salamander/'
+			'baseUrl': baseUrl
 		}).toDestination();
 
 		this.handlePlaySong = this.handlePlaySong.bind(this);
@@ -111,7 +112,8 @@ class App extends Component {
 		}
 	}
 
-	handlePlaySong() {
+	async handlePlaySong() {
+		await Tone.start();
 		const song = this.translateForTone(this.state.song);
 		Tone.Transport.cancel();
 		Tone.Transport.clear();
