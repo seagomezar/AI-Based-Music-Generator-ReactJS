@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="badgeGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fffdfa"/>
+      <stop offset="70%" stop-color="#f5efe6"/>
+      <stop offset="100%" stop-color="#ebdccb"/>
+    </radialGradient>
+    <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37"/>
+      <stop offset="50%" stop-color="#aa8022"/>
+      <stop offset="100%" stop-color="#805d10"/>
+    </linearGradient>
+    <linearGradient id="clefColor" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a1521"/>
+      <stop offset="100%" stop-color="#1f090e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer classical medallion background -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#badgeGrad)" stroke="url(#goldRim)" stroke-width="2.5" />
+  
+  <!-- Subtle inner decorative hairline -->
+  <rect x="5.5" y="5.5" width="53" height="53" rx="11" fill="none" stroke="#d4af37" stroke-width="0.75" stroke-dasharray="2,2" opacity="0.6"/>
+
+  <!-- Classical Treble Clef (G-Clef) -->
+  <g transform="translate(14, 6) scale(0.68)" fill="url(#clefColor)">
+    <path d="M26.5 68.2c-4.2 0-7.8-2.1-10-5.8-2.1-3.7-2.6-8.5-1.4-13.8 1.1-4.9 3.7-10 7.3-14.6 3.3-4.2 7.6-8.1 12.2-11.4 1.3-.9 2.6-1.8 3.9-2.7.5-.3.8-.6 1.2-1l.2-.2c-.9-6.3-2.3-15-3.4-22.3-1-7-1.7-12.4-1.7-14.4 0-3.9 1-7.5 3.2-10 2.2-2.5 5.5-3.7 9.5-3.7 3.7 0 6.6 1.1 8.8 3.1 2 2 3.1 4.9 3.1 8.3 0 4.4-1.6 10.3-4.6 17-2.8 6.3-6.5 13.3-10.4 20.1l2.8 20.8c2.7-1.2 5.6-1.9 8.3-1.9 6.9 0 12.8 2.7 17.2 7.7 4.4 5 6.5 11.5 6 18.5-.5 7.4-3.7 14-9.1 18.8-5.5 4.8-12.4 7.3-19.8 7.1-6.4-.1-12.1-2.1-16.4-5.7l-2.2 17.2c-1 7.6-2.8 13.7-5.7 17.7-2.9 4-7 6.2-11.9 6.2-3.9 0-7-1.3-9.3-3.7-2.3-2.4-3.4-5.7-3.4-9.6 0-4.5 1.7-8.3 4.7-11 3-2.6 6.8-3.9 11-3.9 1.4 0 2.8.2 4 .7-.2 2.2-.4 4.3-.4 5.8 0 3.3.6 5.8 1.8 7.4 1.2 1.5 2.8 2.3 5 2.3 3 0 5.3-1.8 7-5.1 1.7-3.3 2.7-8.6 3.3-15.2l3.1-23.9c-4.4 2.8-9 4.4-13.6 4.4z"/>
+  </g>
+</svg>
