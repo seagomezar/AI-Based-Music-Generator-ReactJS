@@ -115,23 +115,41 @@ function evaluateKennanScore({
   // 2. Primera nota y Cadencia Final
   if (isFirstNote) {
     if (bDeg === 1) {
-      score += 350; // La primera nota debe ser la tónica fundamental
+      score += 450; // La primera nota debe ser la tónica fundamental
       if (mod12 === 0) score += 60; // Octava con la tónica
       if (mod12 === 3 || mod12 === 4) score += 40; // Décima
     } else {
-      score -= 300;
+      score -= 500;
     }
   }
 
   if (isFinalNote) {
-    if (bDeg !== 1) return -10000; // La resolución final DEBE ser en la tónica fundamental
-    score += 500;
-    if (mod12 === 0) score += 120; // Octava pura sobre la tónica
+    if (bDeg === 1) {
+      score += 600; // Resolución auténtica perfecta en tónica
+      if (mod12 === 0) score += 120; // Octava pura sobre la tónica
+    } else {
+      score -= 2000;
+    }
   }
 
   if (isPenultimate) {
-    // Preparación de cadencia sobre la dominante (grado 5 o grado 2)
-    if (bDeg === 5 || bDeg === 2 || bDeg === 7) score += 180;
+    // Preparación de cadencia sobre la dominante auténtica (V o vii°)
+    if (bDeg === 5) {
+      score += 280; // Dominante fundamental (cadencia V -> I clásica)
+    } else if (bDeg === 7) {
+      score += 240; // Sensible (vii° con resolución ascendente en tónica)
+    } else if (bDeg === 2) {
+      score += 50; // Supertonica
+    }
+
+    // Prohibir terminantemente octavas en el pulso penúltimo
+    // para evitar que desemboque en octavas consecutivas hacia la cadencia
+    if (mod12 === 0) {
+      score -= 800;
+    }
+    if (mod12 === 7) {
+      score -= 300;
+    }
   }
 
   // 3. Intervalos verticales consonantes vs disonantes (Kennan, Cap. 2)
@@ -309,7 +327,7 @@ export function generateSecondVoice(song, scaleKey = 'C') {
 
       const isFirst = isFirstMeasure && bIdx === 0;
       const isFinal = isLastMeasure && bIdx === bassDurations.length - 1;
-      const isPenult = isPenultMeasure || (isLastMeasure && bIdx === 0);
+      const isPenult = !isFirst && (isPenultMeasure || (isLastMeasure && bIdx === 0));
 
       // Evaluación de candidatos según las reglas de Kennan
       const scoredCandidates = [];
@@ -331,6 +349,9 @@ export function generateSecondVoice(song, scaleKey = 'C') {
 
       // Filtrar violaciones estrictas (score < -500: quintas/octavas paralelas o cruce de voces)
       let viable = scoredCandidates.filter(c => c.sc > -500);
+      if (viable.length === 0) {
+        viable = scoredCandidates.filter(c => c.sc > -3000);
+      }
       if (viable.length === 0) {
         viable = scoredCandidates;
       }
