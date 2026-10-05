@@ -129,3 +129,97 @@
   fill: #b91c1c !important;
   font-weight: bold;
 }
+
+/* Counterpoint Controls - Placed right below the score */
+.counterpoint-action-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.counterpoint-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-counterpoint-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--classical-burgundy), #5e1622);
+  color: #ffffff;
+  border: 1px solid #4a1019;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(122, 31, 45, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-counterpoint-primary:hover {
+  background: linear-gradient(135deg, #8f2434, #6b1826);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(122, 31, 45, 0.25);
+}
+
+.btn-counterpoint-primary.active {
+  background: var(--surface-cream);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.btn-counterpoint-primary.active:hover {
+  background: #f0ebe1;
+  border-color: #c9bea9;
+}
+
+.btn-counterpoint-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface);
+  color: var(--classical-burgundy);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-counterpoint-secondary:hover {
+  background: var(--surface-cream);
+  border-color: var(--classical-gold);
+}
+
+.counterpoint-theory-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: #fdfaf2;
+  border: 1px solid #e8dfc8;
+  border-left: 3px solid var(--classical-gold);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.95rem;
+  font-size: 0.83rem;
+  color: #5c5240;
+  line-height: 1.5;
+}
+
+.counterpoint-theory-badge .icon-gold {
+  color: var(--classical-gold);
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}

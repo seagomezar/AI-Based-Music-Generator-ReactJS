@@ -46,6 +46,7 @@ export class Voice {
   constructor() {
     this.addTickables = fn().mockReturnValue(this);
     this.setMode = fn().mockReturnValue(this);
+    this.draw = fn().mockReturnValue(this);
   }
 }
 Voice.Mode = { STRICT: 1, SOFT: 2, FULL: 3 };
@@ -55,10 +56,34 @@ export class Accidental {
   static applyAccidentals = fn();
 }
 
-export const Formatter = {
-  FormatAndDraw: fn(),
-  SimpleFormat: fn(),
+export class StaveConnector {
+  constructor() {
+    this.setType = fn().mockReturnValue(this);
+    this.setContext = fn().mockReturnValue(this);
+    this.draw = fn().mockReturnValue(this);
+  }
+}
+StaveConnector.type = {
+  SINGLE_RIGHT: 0,
+  SINGLE_LEFT: 1,
+  SINGLE: 1,
+  DOUBLE: 2,
+  BRACE: 3,
+  BRACKET: 4,
+  BOLD_DOUBLE_LEFT: 5,
+  BOLD_DOUBLE_RIGHT: 6,
+  THIN_DOUBLE: 7,
+  NONE: 8,
 };
+
+export class Formatter {
+  constructor() {
+    this.joinVoices = fn().mockReturnValue(this);
+    this.formatToStave = fn().mockReturnValue(this);
+  }
+}
+Formatter.FormatAndDraw = fn();
+Formatter.SimpleFormat = fn();
 
 export const Beam = {
   generateBeams: fn().mockReturnValue([]),
@@ -78,6 +103,7 @@ const mockVex = {
   StaveNote,
   Accidental,
   Voice,
+  StaveConnector,
   Formatter,
   Beam,
   Barline,

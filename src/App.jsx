@@ -5,6 +5,10 @@ import Song from './Song/Song';
 import Visualizator from './Visualizator/Visualizator';
 import { generateSong } from './Generators/MusicGenerator';
 import {
+  generateSecondVoice,
+  resolveSopranoSound,
+} from './Generators/CounterpointGenerator';
+import {
   CURRENT_SOUNDS,
   SALAMANDER_PIANO_SOUNDS,
   getNotationForPlay,
@@ -25,6 +29,7 @@ class App extends Component {
       scale: CURRENT_SCALE,
       generated: false,
       song: [],
+      secondVoice: null,
       isPlaying: false,
       creationDate: 0,
       visualizatorType: 'piano',
@@ -47,6 +52,8 @@ class App extends Component {
     this.handleStopSong = this.handleStopSong.bind(this);
     this.handleRun = this.handleRun.bind(this);
     this.handleChangeVisualization = this.handleChangeVisualization.bind(this);
+    this.handleToggleSecondVoice = this.handleToggleSecondVoice.bind(this);
+    this.handleRegenerateSecondVoice = this.handleRegenerateSecondVoice.bind(this);
   }
 
   bringToTop(targetElement) {
@@ -63,31 +70,84 @@ class App extends Component {
     const song = generateSong(this.state.duration);
     this.setState({
       song,
+      secondVoice: null,
       generated: true,
       creationDate: moment(Date.now()).format('DD/MM/YYYY HH:mm:ss'),
     });
   }
 
-  translateForTone(song) {
-    const newSong = [];
+  handleToggleSecondVoice() {
+    if (this.state.secondVoice) {
+      this.setState({ secondVoice: null }, () => {
+        if (this.state.isPlaying) {
+          this.handleStopSong();
+          this.handlePlaySong();
+        }
+      });
+    } else {
+      const secondVoice = generateSecondVoice(this.state.song, this.state.scale);
+      this.setState({ secondVoice }, () => {
+        if (this.state.isPlaying) {
+          this.handleStopSong();
+          this.handlePlaySong();
+        }
+      });
+    }
+  }
+
+  handleRegenerateSecondVoice() {
+    const secondVoice = generateSecondVoice(this.state.song, this.state.scale);
+    this.setState({ secondVoice }, () => {
+      if (this.state.isPlaying) {
+        this.handleStopSong();
+        this.handlePlaySong();
+      }
+    });
+  }
+
+  translateForTone(song, secondVoice = null) {
+    const events = [];
+    const hasSecondVoice = Boolean(secondVoice && secondVoice.length > 0);
+
     for (let i = 0; i < song.length; i++) {
       let currentTempo = 0;
       const notes = song[i].notes;
       for (let j = 0; j < notes.length; j++) {
         const note = notes[j];
-        const sound = CURRENT_SOUNDS[note.sound];
+        const sound = resolveSopranoSound(note, this.state.scale);
         const duration = getNotationForPlay(note.duration);
-        newSong.push({
+        events.push({
           time: i + ':' + currentTempo,
           note: sound,
           canonicalNote: getCanonicalPianoNote(sound),
           duration: duration,
-          vfId: `vf-${i}-${j}`,
+          vfId: hasSecondVoice ? `vf-top-${i}-${j}` : `vf-${i}-${j}`,
         });
         currentTempo += note.duration;
       }
     }
-    return newSong;
+
+    if (hasSecondVoice) {
+      for (let i = 0; i < secondVoice.length; i++) {
+        let currentTempo = 0;
+        const notes = secondVoice[i].notes;
+        for (let j = 0; j < notes.length; j++) {
+          const note = notes[j];
+          const sound = note.soundName || 'C3';
+          const duration = getNotationForPlay(note.duration);
+          events.push({
+            time: i + ':' + currentTempo,
+            note: sound,
+            canonicalNote: getCanonicalPianoNote(sound),
+            duration: duration,
+            vfId: `vf-bottom-${i}-${j}`,
+          });
+          currentTempo += note.duration;
+        }
+      }
+    }
+
+    return events;
   }
 
   transformElement(element, kind, note) {
@@ -120,7 +180,7 @@ class App extends Component {
 
   async handlePlaySong() {
     await Tone.start();
-    const song = this.translateForTone(this.state.song);
+    const song = this.translateForTone(this.state.song, this.state.secondVoice);
     Tone.Transport.cancel();
     Tone.Transport.clear();
 
@@ -283,11 +343,14 @@ class App extends Component {
           {song && song.length > 0 ? (
             <Song
               song={song}
+              secondVoice={this.state.secondVoice}
               creationDate={creationDate}
               tempo={speed}
               scale={this.state.scale}
               activeNote={activeNote}
               handlePlaySong={this.handlePlaySong}
+              onToggleSecondVoice={this.handleToggleSecondVoice}
+              onRegenerateSecondVoice={this.handleRegenerateSecondVoice}
             />
           ) : (
             <div className="sheet-loading-card">

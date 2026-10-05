@@ -25,7 +25,7 @@
  */
 // DATA STRUCTURES DESCRIPTION //
 
-import { CURRENT_SOUNDS, ALL_DURATIONS } from "../Constants";
+import { CURRENT_SOUNDS, ALL_DURATIONS } from "../Constants.js";
 
 /** 
  * @function isValidMeasure(@argument Measure) @returns boolean 
